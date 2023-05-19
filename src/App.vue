@@ -1,7 +1,13 @@
 <template>
-  <div class="container">
+  <div 
+    class="container"
+  >
     <side-bar />
     <all-tasks />
+    <!-- <pop-up 
+      v-if="isVisible"
+      class="pop-up"
+    /> -->
   </div>
 </template>
 
@@ -14,9 +20,15 @@ export default {
   name: 'App',
   components: {
     SideBar,
-    AllTasks
+    AllTasks,
+   
+  },
 
-  }
+  // computed: {
+  //     isVisible() {
+  //       return this.$store.getters['isVisible']
+  //     }
+  //   },
 }
 </script>
 
@@ -112,9 +124,12 @@ select {
 }
 
 .container {
-  background: rgb(202, 202, 202);
+  background: rgb(108,39,126);
+background: linear-gradient(90deg, rgba(108,39,126,1) 0%, rgba(65,9,121,1) 50%, rgba(81,1,182,1) 100%);
   padding: 20px;
   display: flex;
+  justify-content: center;
+  align-items: center;
   gap: 16px;
 }
 

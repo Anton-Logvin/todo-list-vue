@@ -1,5 +1,5 @@
 <template>
-  <div class="side-bar">
+  <div class="side-bar"  @click="VisiblePopUp">
     <div class="menu__header">
       <img src="../assets/image/Manager.svg" alt="">
       <span class="menu__title">To Do Manager</span>
@@ -9,22 +9,38 @@
     
     <tasks-category />
     
-    <custom-button />
-    
+    <custom-button 
+      @click="VisiblePopUp"
+      :title="titleBtn"
+      :imageSrc="imageSrc"
+    />
   </div>
 </template>
 
 <script>
-import CustomButton from './form/CustomButton.vue'
-import ActionsWithTasks from './widgets/ActionsWithTasks.vue'
-import TasksCategory from './widgets/TasksCategory.vue'
+import CustomButton from './form/CustomButton'
+import ActionsWithTasks from './widgets/ActionsWithTasks'
+import TasksCategory from './widgets/TasksCategory'
   export default {
     name: 'SideBar',
+
+    data() {
+      return {
+        titleBtn: 'Add task',
+        imageSrc: "@/assets/image/plus.svg"
+      }
+    },
     components: { 
       ActionsWithTasks,
-        TasksCategory,
-        CustomButton, 
+      TasksCategory,
+      CustomButton,
     },
+
+    methods: {
+      VisiblePopUp() {
+        this.$store.dispatch('isVisiblePopUp')
+      }
+    }
   }
 </script>
 
