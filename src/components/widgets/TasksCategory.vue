@@ -1,6 +1,6 @@
 <template>
   <ul>
-    <li class="menu__item">categories</li>
+    <li class="menu__item">categories<img class="menu__icon" src="@/assets/image/plus-gray.svg" alt=""></li>
     <li class="menu__item"><img class="menu__icon" src="@/assets/image/blue.svg" alt=""><span>Work</span></li>
     <li class="menu__item"><img class="menu__icon" src="@/assets/image/yellow.svg" alt=""><span>Personal</span></li>
     <li class="menu__item"><img class="menu__icon" src="@/assets/image/orange.svg" alt=""><span>Shopping</span></li>
@@ -19,9 +19,10 @@
 
 <style lang="scss" scoped>
   .menu {
-    display: flex;
-    flex-direction: column;
-    list-style-type: none;
+    // display: flex;
+    // flex-direction: column;
+    // list-style-type: none;
+    
 
     &__item {
       display: flex;
@@ -35,7 +36,7 @@
     }
 
     &__icon {
-
+   
     }
   }
 </style>

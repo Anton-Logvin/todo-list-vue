@@ -27,7 +27,7 @@ import TasksCategory from './widgets/TasksCategory'
     data() {
       return {
         titleBtn: 'Add task',
-        imageSrc: "@/assets/image/plus.svg"
+        imageSrc: require("@/assets/image/plus.svg")
       }
     },
     components: { 

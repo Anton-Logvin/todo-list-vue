@@ -4,10 +4,6 @@
   >
     <side-bar />
     <all-tasks />
-    <!-- <pop-up 
-      v-if="isVisible"
-      class="pop-up"
-    /> -->
   </div>
 </template>
 
@@ -23,12 +19,6 @@ export default {
     AllTasks,
    
   },
-
-  // computed: {
-  //     isVisible() {
-  //       return this.$store.getters['isVisible']
-  //     }
-  //   },
 }
 </script>
 

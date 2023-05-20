@@ -8,7 +8,7 @@ const store = new Vuex.Store({
 
   state: {
     tasks: [],
-    task: '',
+    task: {},
     isVisible: false,
   },
 
@@ -25,7 +25,7 @@ const store = new Vuex.Store({
   mutations: {
     addTask(state, task) {
       state.tasks.push(task)
-      console.log(state.tasks)
+      console.log(state.tasks, task)
     },
 
     isVisiblePopUp(state) {
@@ -34,7 +34,8 @@ const store = new Vuex.Store({
   },
 
   actions: {
-    addTask({commit}, task) {
+    addTask({commit}, taskText) {
+      const task = {text: taskText}
       commit('addTask', task)
     },
 

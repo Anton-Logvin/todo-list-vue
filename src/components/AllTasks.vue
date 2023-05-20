@@ -19,8 +19,13 @@
       <span class="tasks__subtitle-part">Actions</span>
     </div>
       
-    <tasks-item />
-    <pop-up class="tasks__pop-up" v-if="isVisible"/>
+    <tasks-item 
+    
+    />
+    <pop-up 
+      class="tasks__pop-up" 
+      v-if="isVisible"
+    />
   </div>
 </template>
 
@@ -29,6 +34,12 @@ import PopUp from './popUp.vue'
 import TasksItem from './widgets/TasksItem.vue'
   export default {
     name: 'AllTasks',
+
+    data() {
+      return {
+       
+      }
+    },
 
     components: { 
       TasksItem, 
