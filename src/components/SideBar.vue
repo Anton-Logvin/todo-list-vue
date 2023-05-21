@@ -1,16 +1,25 @@
 <template>
-  <div class="side-bar"  @click="VisiblePopUp">
+  <div class="side-bar">
     <div class="menu__header">
       <img src="../assets/image/Manager.svg" alt="">
       <span class="menu__title">To Do Manager</span>
     </div>
 
-    <actions-with-tasks />
+    <actions-with-tasks 
     
-    <tasks-category />
+    />
     
+    <tasks-category 
+    
+    />
+    
+    <!-- <pop-up 
+      class=""
+      v-if="isVisible"
+    /> -->
+
     <custom-button 
-      @click="VisiblePopUp"
+      @click.native="VisiblePopUp"
       :title="titleBtn"
       :imageSrc="imageSrc"
     />
@@ -19,6 +28,7 @@
 
 <script>
 import CustomButton from './form/CustomButton'
+// import PopUp from './popUp'
 import ActionsWithTasks from './widgets/ActionsWithTasks'
 import TasksCategory from './widgets/TasksCategory'
   export default {
@@ -27,18 +37,26 @@ import TasksCategory from './widgets/TasksCategory'
     data() {
       return {
         titleBtn: 'Add task',
-        imageSrc: require("@/assets/image/plus.svg")
+        imageSrc: require("@/assets/image/plus.svg"),
+        isVisible: false,
+        dataPopUp: {
+          title: 'Create task',
+          titleBtn: 'Create',
+          actionVuex: 'addTask'
+        }
       }
     },
     components: { 
       ActionsWithTasks,
       TasksCategory,
       CustomButton,
+      // PopUp,
     },
 
     methods: {
       VisiblePopUp() {
-        this.$store.dispatch('isVisiblePopUp')
+        console.log('add task click')
+        this.$store.dispatch('isVisiblePopUp', this.dataPopUp)
       }
     }
   }

@@ -8,8 +8,10 @@ const store = new Vuex.Store({
 
   state: {
     tasks: [],
+    categories: [],
     task: {},
     isVisible: false,
+    dataPopUp: {}
   },
 
   getters: {
@@ -19,7 +21,16 @@ const store = new Vuex.Store({
 
     isVisible(state) {
       return state.isVisible
+    },
+
+    getDataPopUp(state) {
+      return state.dataPopUp
+    },
+
+    getCategories(state) {
+      return state.categories
     }
+
   },
 
   mutations: {
@@ -28,19 +39,30 @@ const store = new Vuex.Store({
       console.log(state.tasks, task)
     },
 
-    isVisiblePopUp(state) {
+    addCategory(state, category) {
+      state.categories.push(category)
+    },
+
+    isVisiblePopUp(state, dataPopUp) {
       state.isVisible = !state.isVisible
+      state.dataPopUp = dataPopUp
+      console.log(state.isVisible)
     }
   },
 
   actions: {
     addTask({commit}, taskText) {
-      const task = {text: taskText}
+      const task = {name: taskText}
       commit('addTask', task)
     },
 
-    isVisiblePopUp({commit}) {
-      commit('isVisiblePopUp')
+    addCategory({commit}, categoryName) {
+      const category = {name: categoryName}
+      commit('addCategory', category)
+    },
+
+    isVisiblePopUp({commit}, dataPopUp) {
+      commit('isVisiblePopUp', dataPopUp)
     }
   }
 })

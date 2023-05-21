@@ -4,7 +4,7 @@
       <input class="task__checkbox" type="checkbox"  id="task" name="task" value="yes">
       <label for="task"></label>
       <div class="task__item-task">
-        <p class="task__item-name">Task title will be placed here</p>
+        <p class="task__item-name">{{ task.name }}</p>
         <p class="task__item-data">24  April 2020</p>
       </div>
     </div>
@@ -22,7 +22,12 @@
 <script>
   export default {
     name: 'TasksItem',
-
+    props: {
+      task: {
+        type: Object,
+        default: null
+      }
+    }
   }
 </script>
 

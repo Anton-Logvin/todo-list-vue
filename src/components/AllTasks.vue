@@ -9,7 +9,6 @@
         class="tasks__search" 
         type="text" 
         placeholder="Search"
-        
         :class="{ active: isVisible}"
       >
     </div>
@@ -20,8 +19,11 @@
     </div>
       
     <tasks-item 
-    
+      v-for="task in getAllTasks"
+      :key="task.name"
+      :task="task"
     />
+    
     <pop-up 
       class="tasks__pop-up" 
       v-if="isVisible"
@@ -49,6 +51,10 @@ import TasksItem from './widgets/TasksItem.vue'
     computed: {
       isVisible() {
         return this.$store.getters['isVisible']
+      },
+
+      getAllTasks() {
+        return this.$store.getters['getTasks']
       }
     },
 

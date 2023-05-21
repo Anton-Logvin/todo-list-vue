@@ -1,28 +1,69 @@
 <template>
-  <ul>
-    <li class="menu__item">categories<img class="menu__icon" src="@/assets/image/plus-gray.svg" alt=""></li>
-    <li class="menu__item"><img class="menu__icon" src="@/assets/image/blue.svg" alt=""><span>Work</span></li>
-    <li class="menu__item"><img class="menu__icon" src="@/assets/image/yellow.svg" alt=""><span>Personal</span></li>
-    <li class="menu__item"><img class="menu__icon" src="@/assets/image/orange.svg" alt=""><span>Shopping</span></li>
-    <li class="menu__item"><img class="menu__icon" src="@/assets/image/green.svg" alt=""><span>Education</span></li>
-  </ul>
+  <div class="categories">
+    <p class="categories__header">categories
+      <img 
+        class="categories__create-icon" 
+        src="@/assets/image/plus-gray.svg" 
+        alt=""
+        @click="addCategory"
+      >
+    </p>
+   
+    <category-item 
+      class="categories__item"
+      v-for="category in categories"
+      :key="category.name"
+      :category="category"
+    />
+  </div>
 </template>
 
 <script>
+import CategoryItem from './CategoryItem'
   export default {
     name: 'TasksCategory',
-    components: {
 
+    props: {
+    
+    },
+
+    data() {
+      return {
+        // category: 'lol',
+        dataPopUp: {
+          title: 'Create category',
+          titleBtn: 'Create category',
+          actionVuex: 'addCategory'
+        }
+      }
+    },
+
+    components: {
+        CategoryItem
+    },
+
+    computed: {
+      categories() {
+        return this.$store.getters['getCategories']
+      }
+    },
+
+    methods: {
+      addCategory() {
+        console.log('task category click')
+        this.$store.dispatch('isVisiblePopUp', this.dataPopUp)
+      }
     }
   }
 </script>
 
 <style lang="scss" scoped>
-  .menu {
-    // display: flex;
-    // flex-direction: column;
-    // list-style-type: none;
-    
+  .categories{
+    &__header {
+      display: flex;
+      justify-content: space-between;
+      padding: 20px 10px;
+    }
 
     &__item {
       display: flex;
@@ -31,12 +72,8 @@
       gap: 12px;
     }
 
-    &__item:hover {
-      background: #F9F9FB;
-    }
-
-    &__icon {
-   
+    &__create-icon {
+      cursor: pointer;
     }
   }
 </style>
