@@ -1,5 +1,5 @@
 <template>
-  <div>{{ category.name }}</div>
+  <div>{{ category }}</div>
 </template>
 
 <script>
@@ -8,8 +8,8 @@
 
     props: {
       category: {
-        type: Object,
-        default: null
+        type: String,
+        default: ''
       }
     }
   }

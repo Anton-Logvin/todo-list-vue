@@ -1,7 +1,7 @@
 <template>
   <div class="popup" >
     <div class="popup__header">
-      <h2>{{ getDataPopUp.title }}</h2>
+      <h2>CATEGORIES</h2>
       <img 
         class="popup__btn-close" 
         src="@/assets/image/close-red-icon.svg" 
@@ -12,25 +12,13 @@
     
     <custom-input 
       class="popup__input"
-      v-model="itemPopUp.inputValue"
+      v-model="inputValue"
       fill
     />
-    <div class="popup__categories">
-      <category-item 
-        class="popup__categories-item"
-        v-for="category in categories"
-        :key="category.name"
-        :category="category"
-        @click.native="selectedCategories(category)"
-      />
-    </div>
-    getTaskForCgange:{{ getTaskForCgange }} <br/>
-    getDataPopUp:{{ getDataPopUp }} <br/>
-    category:{{ itemPopUp.category }} <br/>
-    //////{{ changeTask }}
+
     <custom-button 
-      @click.native="ButtonClick"
-      :title="getDataPopUp.titleBtn"
+      @click.native="addCategory"
+      :title="titleBtn"
       :imageSrc="imageTaskBtn"
     />
   </div>
@@ -39,44 +27,27 @@
 <script>
 import CustomButton from './form/CustomButton'
 import CustomInput from './form/CustomInput'
-import CategoryItem from './widgets/CategoryItem'
 
 export default {
-  name: 'popUp',
+  name: 'ModalCategories',
 
-  props: {
-    changeTask: {
-      type: Object,
-      default: ()=>{},
-    }
-  },
   data() {
     return {
-      // titleBtn: 'Create task',
+      titleBtn: 'Create category',
       imageTaskBtn: require("@/assets/image/create-svgrepo-com.svg"),
-      itemPopUp: {
+   
         inputValue: '',
-        category: [],
-        dateOfCreation: {},
-        isStareed: false,
-        isImpotant: false,
-        isComplete: false,
-      },
+    
     }
   },
   components: { 
     CustomInput,
     CustomButton,
-    CategoryItem,
   },
 
   computed: {
-    getDataPopUp() {
-      return this.$store.getters['getDataPopUp']
-    },
-
-    getTaskForCgange() {
-      return this.$store.getters['getTaskForChange']
+    getDataModalCategories() {
+      return this.$store.getters['getDataModalCategories']
     },
 
     categories() {
@@ -87,26 +58,17 @@ export default {
   },
 
   methods: {
-    ButtonClick() {
-      this.$store.dispatch( this.getDataPopUp.actionVuex, this.itemPopUp)
-      this.$store.dispatch('isVisiblePopUp')
+    addCategory() {
+      this.$store.dispatch('addCategory', this.inputValue)
     },
 
     selectedCategories(category) {
-      this.itemPopUp.category.push(category)
-      console.log(this.itemPopUp.category)
+      console.log('selecled categories', category)
     },
 
     closePopUp() {
-      this.$store.dispatch('isVisiblePopUp')
+      this.$store.dispatch('isVisibleModalCategories')
     }
-  },
-
-  created() {
-    if(this.getTaskForCgange) {
-        this.itemPopUp = this.getTaskForCgange.task
-        this.itemPopUp.index = this.getTaskForCgange.index
-      }
   }
 
 }

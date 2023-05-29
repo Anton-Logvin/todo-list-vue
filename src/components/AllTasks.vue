@@ -9,7 +9,7 @@
         class="tasks__search" 
         type="text" 
         placeholder="Search"
-        :class="{ active: isVisible}"
+        :class="{ active: isVisibleModalCategories}"
       >
     </div>
     <div class="tasks__subtitle">
@@ -19,19 +19,26 @@
     </div>
       
     <tasks-item 
-      v-for="task in getAllTasks"
-      :key="task.name"
+      v-for="(task, index) in getAllTasks"
+      :key="index"
       :task="task"
+      :index="index"
     />
     
     <pop-up 
       class="tasks__pop-up" 
       v-if="isVisible"
     />
+
+    <modal-categories 
+      class="tasks__pop-up" 
+      v-if="isVisibleModalCategories"
+    />
   </div>
 </template>
 
 <script>
+import ModalCategories from './ModalCategories.vue'
 import PopUp from './popUp.vue'
 import TasksItem from './widgets/TasksItem.vue'
   export default {
@@ -39,13 +46,14 @@ import TasksItem from './widgets/TasksItem.vue'
 
     data() {
       return {
-       
+    
       }
     },
 
     components: { 
       TasksItem, 
-      PopUp 
+      PopUp,
+      ModalCategories,
     },
 
     computed: {
@@ -53,10 +61,21 @@ import TasksItem from './widgets/TasksItem.vue'
         return this.$store.getters['isVisible']
       },
 
+      isVisibleModalCategories() {
+        return this.$store.getters['isVisibleModalCategories']
+      },
+
       getAllTasks() {
         return this.$store.getters['getTasks']
       }
     },
+
+    methods: {
+      // getTask(changeTask) {
+      //   // this.changeTask = changeTask
+      //   console.log(changeTask)
+      // }
+    }
 
   }
 </script>

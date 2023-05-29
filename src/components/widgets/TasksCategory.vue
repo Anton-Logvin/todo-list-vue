@@ -15,6 +15,8 @@
       :key="category.name"
       :category="category"
     />
+
+    {{ categories }}
   </div>
 </template>
 
@@ -29,7 +31,6 @@ import CategoryItem from './CategoryItem'
 
     data() {
       return {
-        // category: 'lol',
         dataPopUp: {
           title: 'Create category',
           titleBtn: 'Create category',
@@ -50,8 +51,7 @@ import CategoryItem from './CategoryItem'
 
     methods: {
       addCategory() {
-        console.log('task category click')
-        this.$store.dispatch('isVisiblePopUp', this.dataPopUp)
+        this.$store.dispatch('isVisibleModalCategories')
       }
     }
   }

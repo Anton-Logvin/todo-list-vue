@@ -55,7 +55,7 @@ import TasksCategory from './widgets/TasksCategory'
 
     methods: {
       VisiblePopUp() {
-        console.log('add task click')
+        // this.$store.dispatch('ChangeTask', null)
         this.$store.dispatch('isVisiblePopUp', this.dataPopUp)
       }
     }

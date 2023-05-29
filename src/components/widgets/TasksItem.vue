@@ -4,16 +4,18 @@
       <input class="task__checkbox" type="checkbox"  id="task" name="task" value="yes">
       <label for="task"></label>
       <div class="task__item-task">
-        <p class="task__item-name">{{ task.name }}</p>
+        <p class="task__item-name">{{ task.inputValue }}</p>
         <p class="task__item-data">24  April 2020</p>
       </div>
     </div>
     <p class="task__item-category">
-      <img src="@/assets/image/orange.svg" alt="">
-      Shopping
+      <!-- <img src="@/assets/image/orange.svg" alt="">
+      Shopping -->
+        {{ task.category }}
+        {{ index }}
     </p>
     <div class="task__item-icons">
-      <img src="@/assets/image/editTask.svg" alt="">
+      <img @click="ChangeTask" src="@/assets/image/editTask.svg" alt="">
       <img src="@/assets/image/dott.svg" alt="">
     </div>
   </div>
@@ -22,10 +24,39 @@
 <script>
   export default {
     name: 'TasksItem',
+
+    data() {
+      return {
+        dataPopUp: {
+          title: 'Save changes',
+          titleBtn: 'Save',
+          actionVuex: 'changeTask'
+        }
+      }
+    },
+
     props: {
       task: {
         type: Object,
         default: null
+      },
+
+      index: {
+        type: Number,
+        default: null
+      }
+    },
+
+    methods: {
+      ChangeTask() {
+        const changeTask = {
+          task: this.task,
+          index: this.index
+        }
+        // this.$emit('getTask', this.task)
+        this.$store.dispatch('isVisiblePopUp', this.dataPopUp)
+        // this.$store.dispatch('taskIndexSearch', this.index)
+        this.$store.dispatch('selectedChangeTask', changeTask)
       }
     }
   }

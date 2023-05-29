@@ -9,8 +9,9 @@ const store = new Vuex.Store({
   state: {
     tasks: [],
     categories: [],
-    task: {},
+    changedTask: null,
     isVisible: false,
+    isVisibleModalCategories: false,
     dataPopUp: {}
   },
 
@@ -19,8 +20,16 @@ const store = new Vuex.Store({
       return state.tasks
     },
 
+    getTaskForChange(state) {
+      return state.changedTask
+    },
+
     isVisible(state) {
       return state.isVisible
+    },
+
+    isVisibleModalCategories(state) {
+      return state.isVisibleModalCategories
     },
 
     getDataPopUp(state) {
@@ -36,33 +45,70 @@ const store = new Vuex.Store({
   mutations: {
     addTask(state, task) {
       state.tasks.push(task)
-      console.log(state.tasks, task)
     },
 
     addCategory(state, category) {
       state.categories.push(category)
     },
 
+    changeTask(state, changeItem) {
+      state.tasks[changeItem.index] = changeItem
+    },
+
+
+    selectedChangeTask(state, changedTask) {
+      console.log(changedTask)
+      state.changedTask = changedTask
+    },
+
+
+
+    // taskIndexSearch(state, index) {
+    //   console.log(state.tasks)
+    //   state.tasks[index] = state.task
+     
+    // },
+
     isVisiblePopUp(state, dataPopUp) {
       state.isVisible = !state.isVisible
+      state.isVisibleModalCategories === true ? state.isVisibleModalCategories = false : state.isVisibleModalCategories
       state.dataPopUp = dataPopUp
-      console.log(state.isVisible)
+      state.changedTask = null
+    },
+
+    isVisibleModalCategories(state) {
+      state.isVisibleModalCategories = !state.isVisibleModalCategories
+      state.isVisible === true ? state.isVisible = false : state.isVisible
     }
   },
 
   actions: {
-    addTask({commit}, taskText) {
-      const task = {name: taskText}
-      commit('addTask', task)
+    addTask({commit}, taskItem) {
+      commit('addTask', taskItem)
     },
 
-    addCategory({commit}, categoryName) {
-      const category = {name: categoryName}
-      commit('addCategory', category)
+    addCategory({commit}, categoryItem) {
+      commit('addCategory', categoryItem)
     },
+
+    changeTask({commit}, changeItem) {
+      commit('changeTask', changeItem)
+    },
+
+    selectedChangeTask({commit}, changedTask) {
+      commit('selectedChangeTask', changedTask)
+    },
+
+    // taskIndexSearch({commit}, index) {
+    //   commit('taskIndexSearch', index)
+    // },
 
     isVisiblePopUp({commit}, dataPopUp) {
       commit('isVisiblePopUp', dataPopUp)
+    },
+
+    isVisibleModalCategories({commit}) {
+      commit('isVisibleModalCategories')
     }
   }
 })
