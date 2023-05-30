@@ -12,7 +12,7 @@
     
     <custom-input 
       class="popup__input"
-      v-model="inputValue"
+      v-model="category.inputValue"
       fill
     />
 
@@ -34,10 +34,11 @@ export default {
   data() {
     return {
       titleBtn: 'Create category',
-      imageTaskBtn: require("@/assets/image/create-svgrepo-com.svg"),
-   
+      category: {
         inputValue: '',
-    
+        color: ''
+      },
+      imageTaskBtn: require("@/assets/image/create-svgrepo-com.svg"),
     }
   },
   components: { 
@@ -59,7 +60,9 @@ export default {
 
   methods: {
     addCategory() {
-      this.$store.dispatch('addCategory', this.inputValue)
+      this.category.color = '#' + (Math.random().toString(16) + '000000').substring(2,8).toUpperCase()
+      this.$store.dispatch('addCategory', this.category)
+      this.closePopUp()
     },
 
     selectedCategories(category) {

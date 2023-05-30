@@ -6,18 +6,13 @@
     </div>
 
     <actions-with-tasks 
-    
+      :dataMenuItem = "dataMenuItem"
     />
     
     <tasks-category 
     
     />
     
-    <!-- <pop-up 
-      class=""
-      v-if="isVisible"
-    /> -->
-
     <custom-button 
       @click.native="VisiblePopUp"
       :title="titleBtn"
@@ -42,8 +37,9 @@ import TasksCategory from './widgets/TasksCategory'
         dataPopUp: {
           title: 'Create task',
           titleBtn: 'Create',
-          actionVuex: 'addTask'
-        }
+          actionVuex: 'addTask',
+          placeholder: 'Enter task name'
+        },
       }
     },
     components: { 
@@ -51,6 +47,17 @@ import TasksCategory from './widgets/TasksCategory'
       TasksCategory,
       CustomButton,
       // PopUp,
+    },
+
+    computed: {
+      dataMenuItem() {
+        return [   
+          {name: "All Tasks", imageSrc: '' , quantityTask: this.$store.getters['getTasks'].length},
+          {name: "Starred", imageSrc: require('@/assets/image/star.svg') },
+          {name: "Impotant", imageSrc: require('@/assets/image/alert-circle.svg') },
+          {name: "Completed", imageSrc: require('@/assets/image/check-circle.svg') },
+          {name: "Deleted", imageSrc: require('@/assets/image/trash-2.svg') },]
+      }
     },
 
     methods: {

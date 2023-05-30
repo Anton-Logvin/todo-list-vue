@@ -11,12 +11,11 @@
    
     <category-item 
       class="categories__item"
-      v-for="category in categories"
+      v-for="(category, index) in categories"
       :key="category.name"
       :category="category"
+      :index="index"
     />
-
-    {{ categories }}
   </div>
 </template>
 
@@ -62,7 +61,11 @@ import CategoryItem from './CategoryItem'
     &__header {
       display: flex;
       justify-content: space-between;
-      padding: 20px 10px;
+      align-items: center;
+      padding: 24px 24px;
+      text-transform: uppercase;
+      color: #808080;
+
     }
 
     &__item {

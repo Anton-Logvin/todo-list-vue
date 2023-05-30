@@ -8,11 +8,15 @@
         <p class="task__item-data">24  April 2020</p>
       </div>
     </div>
-    <p class="task__item-category">
-      <!-- <img src="@/assets/image/orange.svg" alt="">
-      Shopping -->
-        {{ task.category }}
-        {{ index }}
+    <p class="task__categories">
+        <category-item 
+          class="task__item-category"
+          v-for="(category, index) in task.category"
+          :key="category.name"
+          :category="category"
+          :index="index"
+        />
+      
     </p>
     <div class="task__item-icons">
       <img @click="ChangeTask" src="@/assets/image/editTask.svg" alt="">
@@ -22,7 +26,9 @@
 </template>
 
 <script>
+import CategoryItem from './CategoryItem.vue'
   export default {
+  components: { CategoryItem },
     name: 'TasksItem',
 
     data() {
@@ -110,9 +116,20 @@
     color: #120E21;
   }
 
+  &__categories {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
   &__item-category {
     display: flex;
     align-items: center;
+    border-radius: 16px;
+    padding: 0px 12px;
+    gap: 5px;
+    background: #F3F3F6;
+    height: 24px;
   }
 
   &__item-icons {

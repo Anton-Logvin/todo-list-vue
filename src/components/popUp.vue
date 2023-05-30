@@ -13,8 +13,11 @@
     <custom-input 
       class="popup__input"
       v-model="itemPopUp.inputValue"
+      :placeholder="getDataPopUp.placeholder"
       fill
     />
+
+    {{ getDataPopUp.plaseholder }}
     <div class="popup__categories">
       <category-item 
         class="popup__categories-item"
@@ -24,10 +27,11 @@
         @click.native="selectedCategories(category)"
       />
     </div>
-    getTaskForCgange:{{ getTaskForCgange }} <br/>
-    getDataPopUp:{{ getDataPopUp }} <br/>
+    <!-- getTaskForCgange:{{ getTaskForCgange }} <br/>
+    getDataPopUp:{{ getDataPopUp }} <br/> -->
     category:{{ itemPopUp.category }} <br/>
-    //////{{ changeTask }}
+    //////
+    
     <custom-button 
       @click.native="ButtonClick"
       :title="getDataPopUp.titleBtn"
@@ -52,7 +56,6 @@ export default {
   },
   data() {
     return {
-      // titleBtn: 'Create task',
       imageTaskBtn: require("@/assets/image/create-svgrepo-com.svg"),
       itemPopUp: {
         inputValue: '',
@@ -62,6 +65,8 @@ export default {
         isImpotant: false,
         isComplete: false,
       },
+
+      isActive: true,
     }
   },
   components: { 
@@ -93,8 +98,12 @@ export default {
     },
 
     selectedCategories(category) {
-      this.itemPopUp.category.push(category)
-      console.log(this.itemPopUp.category)
+      let index = this.itemPopUp.category.findIndex((item => item === category))
+      if(index > -1) {
+        this.itemPopUp.category.splice(index, 1)
+      } else {
+        this.itemPopUp.category.push(category)
+      }
     },
 
     closePopUp() {
@@ -113,7 +122,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .popup {
+   .popup {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
