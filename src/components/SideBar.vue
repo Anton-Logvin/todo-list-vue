@@ -38,7 +38,8 @@ import TasksCategory from './widgets/TasksCategory'
           title: 'Create task',
           titleBtn: 'Create',
           actionVuex: 'addTask',
-          placeholder: 'Enter task name'
+          placeholder: 'Enter task name',
+          isVisibleComponent: true,
         },
       }
     },

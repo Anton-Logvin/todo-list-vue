@@ -11,6 +11,7 @@
     </div>
     
     <custom-input 
+      v-if="getDataPopUp.isVisibleComponent"
       class="popup__input"
       v-model="itemPopUp.inputValue"
       :placeholder="getDataPopUp.placeholder"
@@ -18,7 +19,7 @@
     />
 
     {{ getDataPopUp.plaseholder }}
-    <div class="popup__categories">
+    <div class="popup__categories" v-if="getDataPopUp.isVisibleComponent">
       <category-item 
         class="popup__categories-item"
         v-for="category in categories"
@@ -27,10 +28,18 @@
         @click.native="selectedCategories(category)"
       />
     </div>
+
+    <div class="popup__statuses" v-if="!getDataPopUp.isVisibleComponent">
+      <p class="popup__status">{{ getDataPopUp.starred }}</p>
+      <p class="popup__status">{{ getDataPopUp.impotant }}</p>
+      <p class="popup__status">{{ getDataPopUp.completed }}</p>
+      <p class="popup__status">{{ getDataPopUp.delete }}</p>
+    </div>
+   
     <!-- getTaskForCgange:{{ getTaskForCgange }} <br/>
     getDataPopUp:{{ getDataPopUp }} <br/> -->
-    category:{{ itemPopUp.category }} <br/>
-    //////
+    <!-- category:{{ itemPopUp.category }} <br/> -->
+   
     
     <custom-button 
       @click.native="ButtonClick"
@@ -43,6 +52,7 @@
 <script>
 import CustomButton from './form/CustomButton'
 import CustomInput from './form/CustomInput'
+
 import CategoryItem from './widgets/CategoryItem'
 
 export default {
@@ -61,7 +71,7 @@ export default {
         inputValue: '',
         category: [],
         dateOfCreation: {},
-        isStareed: false,
+        isStarred: false,
         isImpotant: false,
         isComplete: false,
       },
@@ -73,6 +83,7 @@ export default {
     CustomInput,
     CustomButton,
     CategoryItem,
+   
   },
 
   computed: {
@@ -87,7 +98,6 @@ export default {
     categories() {
       return this.$store.getters['getCategories']
     },
-
     
   },
 
@@ -176,6 +186,25 @@ export default {
 
     &__btn-close:hover {
       box-shadow: 0px 0px 6px rgba(80, 80, 80, 0.64);
+    }
+
+    &__statuses {
+      display: flex;
+      justify-content: space-around;
+    }
+
+    &__status {
+      background: rgb(233, 233, 233);
+      padding: 10px;
+      border-radius: 20px;
+      min-width: 100px;
+      text-align: center;
+      cursor: pointer;
+      transition: all ease .5s;
+    }
+
+    &__status:hover {
+      background: rgb(189, 189, 189);
     }
   }
 

@@ -19,8 +19,8 @@
       
     </p>
     <div class="task__item-icons">
-      <img @click="ChangeTask" src="@/assets/image/editTask.svg" alt="">
-      <img src="@/assets/image/dott.svg" alt="">
+      <img class="task__item-icon" @click="ChangeTask" src="@/assets/image/editTask.svg" alt="">
+      <img class="task__item-icon" @click="setStatusTasks" src="@/assets/image/dott.svg" alt="">
     </div>
   </div>
 </template>
@@ -36,7 +36,19 @@ import CategoryItem from './CategoryItem.vue'
         dataPopUp: {
           title: 'Save changes',
           titleBtn: 'Save',
-          actionVuex: 'changeTask'
+          actionVuex: 'changeTask',
+          isVisibleComponent: true
+        },
+
+        statusTask: {
+          title: 'Set status for task',
+          titleBtn: 'Set status',
+          actionVuex: 'changeTask',
+          isVisibleComponent: false,
+          starred: 'Starred',
+          impotant: 'Impotant',
+          completed: 'Completed',
+          delete: 'Delete',
         }
       }
     },
@@ -63,6 +75,10 @@ import CategoryItem from './CategoryItem.vue'
         this.$store.dispatch('isVisiblePopUp', this.dataPopUp)
         // this.$store.dispatch('taskIndexSearch', this.index)
         this.$store.dispatch('selectedChangeTask', changeTask)
+      },
+
+      setStatusTasks() {
+        this.$store.dispatch('isVisiblePopUp', this.statusTask)
       }
     }
   }
@@ -136,6 +152,10 @@ import CategoryItem from './CategoryItem.vue'
     display: flex;
     justify-content: flex-end;
     align-self: center;
+  }
+
+  &__item-icon {
+    cursor: pointer;
   }
 }
 </style>
