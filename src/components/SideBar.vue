@@ -51,20 +51,24 @@ import TasksCategory from './widgets/TasksCategory'
     },
 
     computed: {
+      completedTasks() {
+        return this.$store.getters['getCompletedTasks']
+      },
+
       dataMenuItem() {
         return [   
-          {name: "All Tasks", imageSrc: '' , quantityTask: this.$store.getters['getTasks'].length},
-          {name: "Starred", imageSrc: require('@/assets/image/star.svg') },
-          {name: "Impotant", imageSrc: require('@/assets/image/alert-circle.svg') },
-          {name: "Completed", imageSrc: require('@/assets/image/check-circle.svg') },
-          {name: "Deleted", imageSrc: require('@/assets/image/trash-2.svg') },]
-      }
+          {name: "All Tasks", imageSrc: '' , quantityTask: this.$store.getters['getTasks']},
+          {name: "Starred", imageSrc: require('@/assets/image/star.svg'), quantityTask: this.$store.getters['getStarredTasks']},
+          {name: "Impotant", imageSrc: require('@/assets/image/alert-circle.svg'), quantityTask: this.$store.getters['getImpotantTasks']},
+          {name: "Completed", imageSrc: require('@/assets/image/check-circle.svg'), quantityTask: this.$store.getters['getCompletedTasks']},
+          {name: "Deleted", imageSrc: require('@/assets/image/trash-2.svg'), quantityTask: this.$store.getters['getDeletedTasks']},]
+      },
     },
 
     methods: {
       VisiblePopUp() {
-        // this.$store.dispatch('ChangeTask', null)
-        this.$store.dispatch('isVisiblePopUp', this.dataPopUp)
+        this.$store.dispatch('popUp/isVisiblePopUp', this.dataPopUp)
+        this.$store.dispatch('selectedChangeTask', null)
       }
     }
   }

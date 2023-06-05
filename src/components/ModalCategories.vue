@@ -70,7 +70,7 @@ export default {
     },
 
     closePopUp() {
-      this.$store.dispatch('isVisibleModalCategories')
+      this.$store.dispatch('popUp/isVisibleModalCategories')
     }
   }
 

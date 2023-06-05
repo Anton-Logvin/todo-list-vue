@@ -1,59 +1,61 @@
 <template>
-  <div class="popup" >
-    <div class="popup__header">
-      <h2>{{ getDataPopUp.title }}</h2>
-      <img 
-        class="popup__btn-close" 
-        src="@/assets/image/close-red-icon.svg" 
-        alt=""
-        @click="closePopUp"
-      >
-    </div>
-    
-    <custom-input 
-      v-if="getDataPopUp.isVisibleComponent"
-      class="popup__input"
-      v-model="itemPopUp.inputValue"
-      :placeholder="getDataPopUp.placeholder"
-      fill
-    />
-
-    {{ getDataPopUp.plaseholder }}
-    <div class="popup__categories" v-if="getDataPopUp.isVisibleComponent">
-      <category-item 
-        class="popup__categories-item"
-        v-for="category in categories"
-        :key="category.name"
-        :category="category"
-        @click.native="selectedCategories(category)"
+  <div class="wrapper">
+    <div class="popup" >
+      <div class="popup__header">
+        <h2>{{ getDataPopUp.title }}</h2>
+        <img 
+          class="popup__btn-close" 
+          src="@/assets/image/close-red-icon.svg" 
+          alt=""
+          @click="closePopUp"
+        >
+      </div>
+      
+      <custom-input 
+        v-if="getDataPopUp.isVisibleComponent"
+        class="popup__input"
+        v-model="itemPopUp.inputValue"
+        :placeholder="getDataPopUp.placeholder"
+        fill
       />
-    </div>
 
-    <div class="popup__statuses" v-if="!getDataPopUp.isVisibleComponent">
-      <p class="popup__status">{{ getDataPopUp.starred }}</p>
-      <p class="popup__status">{{ getDataPopUp.impotant }}</p>
-      <p class="popup__status">{{ getDataPopUp.completed }}</p>
-      <p class="popup__status">{{ getDataPopUp.delete }}</p>
-    </div>
-   
-    <!-- getTaskForCgange:{{ getTaskForCgange }} <br/>
-    getDataPopUp:{{ getDataPopUp }} <br/> -->
-    <!-- category:{{ itemPopUp.category }} <br/> -->
-   
+      {{ getDataPopUp.plaseholder }}
+      <div class="popup__categories" v-if="getDataPopUp.isVisibleComponent">
+        <category-item 
+          class="popup__categories-item"
+          v-for="category in categories"
+          :key="category.name"
+          :category="category"
+          @click.native="selectedCategories(category)"
+        />
+      </div>
+
+      <status-task 
+        v-if="!getDataPopUp.isVisibleComponent"
+        :getDataPopUp="getDataPopUp"
+        @Completed="Completed"
+        @Delete="DeleteTask"
+        @isStarred="isStarred"
+        @isImpotant="isImpotant"
+      />
     
-    <custom-button 
-      @click.native="ButtonClick"
-      :title="getDataPopUp.titleBtn"
-      :imageSrc="imageTaskBtn"
-    />
+      <custom-button 
+        @click.native="ButtonClick"
+        :title="getDataPopUp.titleBtn"
+        :imageSrc="imageTaskBtn"
+      />
+
+      {{ itemPopUp }}
+      
+    </div>
   </div>
 </template>
 
 <script>
 import CustomButton from './form/CustomButton'
 import CustomInput from './form/CustomInput'
-
 import CategoryItem from './widgets/CategoryItem'
+import StatusTask from './widgets/StatusTask.vue'
 
 export default {
   name: 'popUp',
@@ -83,12 +85,13 @@ export default {
     CustomInput,
     CustomButton,
     CategoryItem,
+    StatusTask,
    
   },
 
   computed: {
     getDataPopUp() {
-      return this.$store.getters['getDataPopUp']
+      return this.$store.getters['popUp/getDataPopUp']
     },
 
     getTaskForCgange() {
@@ -104,7 +107,7 @@ export default {
   methods: {
     ButtonClick() {
       this.$store.dispatch( this.getDataPopUp.actionVuex, this.itemPopUp)
-      this.$store.dispatch('isVisiblePopUp')
+      this.$store.dispatch('popUp/isVisiblePopUp')
     },
 
     selectedCategories(category) {
@@ -117,7 +120,26 @@ export default {
     },
 
     closePopUp() {
-      this.$store.dispatch('isVisiblePopUp')
+      this.$store.dispatch('popUp/isVisiblePopUp')
+    },
+
+    Completed() {
+      this.itemPopUp.isComplete = ! this.itemPopUp.isComplete
+      this.$store.dispatch('saveToStorage')
+    },
+
+    DeleteTask() {
+      this.$store.dispatch('deleteTask', this.itemPopUp)
+    },
+
+    isStarred() {
+      this.itemPopUp.isStarred = !this.itemPopUp.isStarred
+      this.$store.dispatch('saveToStorage')
+    },
+
+    isImpotant() {
+      this.itemPopUp.isImpotant = !this.itemPopUp.isImpotant
+      this.$store.dispatch('saveToStorage')
     }
   },
 
@@ -132,14 +154,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-   .popup {
+  .wrapper {
+    position: absolute;
+    background: rgba(66, 66, 66, 0.336);
+    height: 100%;
+    width: 100%;
+    // z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .popup {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     padding: 30px 30px;
     border-radius: 8px;
     width: 500px;
-    height: 400px;
+    min-height: 400px;
     background: rgb(255, 255, 255);
     box-shadow: 0px 0px 8px rgba(205, 209, 212, 0.64);
 
@@ -186,25 +218,6 @@ export default {
 
     &__btn-close:hover {
       box-shadow: 0px 0px 6px rgba(80, 80, 80, 0.64);
-    }
-
-    &__statuses {
-      display: flex;
-      justify-content: space-around;
-    }
-
-    &__status {
-      background: rgb(233, 233, 233);
-      padding: 10px;
-      border-radius: 20px;
-      min-width: 100px;
-      text-align: center;
-      cursor: pointer;
-      transition: all ease .5s;
-    }
-
-    &__status:hover {
-      background: rgb(189, 189, 189);
     }
   }
 

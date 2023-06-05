@@ -1,16 +1,16 @@
 <template>
-  <div class="item">
+  <div class="item" @click="clickMenuItem">
     <div class="item__content">
       <img class="item__icon" :src="item.imageSrc" alt="">
       <span>{{ item.name }}</span> 
     </div>
-    <span>{{ item.quantityTask }}</span>
+    <span>{{ item.quantityTask.length }}</span>
   </div>
 </template>
 
 <script>
   export default {
-    name: "ActionsWithTasks",
+    name: "MenuItem",
 
     props: {
       item: {
@@ -19,16 +19,23 @@
       }
     },
 
-    computed: {
-    
+    methods: {
+      clickMenuItem() {
+        if(this.item.quantityTask.length) {
+          this.$store.dispatch('tasksDisplay', this.item)
+        }
+        
+      }
     }
   }
 </script>
   
 <style lang="scss" scoped>
- 
-
+  .item:hover {
+    background: rgb(207, 149, 207);
+  }
     .item {
+      cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -49,8 +56,4 @@
       }
     }
 
-
-
-
-  // }
 </style>

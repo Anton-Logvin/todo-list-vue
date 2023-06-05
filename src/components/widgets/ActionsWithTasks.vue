@@ -14,6 +14,12 @@ import MenuItem from './MenuItem.vue'
   components: { MenuItem },
     name: "ActionsWithTasks",
 
+    data() {
+      return {
+        
+      }
+    },
+
     props: {
       dataMenuItem: {
         type: Array,

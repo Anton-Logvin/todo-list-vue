@@ -50,7 +50,7 @@ import CategoryItem from './CategoryItem'
 
     methods: {
       addCategory() {
-        this.$store.dispatch('isVisibleModalCategories')
+        this.$store.dispatch('popUp/isVisibleModalCategories')
       }
     }
   }

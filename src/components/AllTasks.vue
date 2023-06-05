@@ -4,7 +4,7 @@
     :class="{ active: isVisible}"
   >
     <div class="tasks__header">
-      <h1 class="tasks__title">All Tasks</h1>
+      <h1 class="tasks__title">{{ getAllTasks.name }}</h1>
       <input 
         class="tasks__search" 
         type="text" 
@@ -19,7 +19,7 @@
     </div>
       
     <tasks-item 
-      v-for="(task, index) in getAllTasks"
+      v-for="(task, index) in getAllTasks.quantityTask"
       :key="index"
       :task="task"
       :index="index"
@@ -38,9 +38,9 @@
 </template>
 
 <script>
-import ModalCategories from './ModalCategories.vue'
-import PopUp from './popUp.vue'
-import TasksItem from './widgets/TasksItem.vue'
+import ModalCategories from './ModalCategories'
+import PopUp from './popUp'
+import TasksItem from './widgets/TasksItem'
   export default {
     name: 'AllTasks',
 
@@ -58,25 +58,26 @@ import TasksItem from './widgets/TasksItem.vue'
 
     computed: {
       isVisible() {
-        return this.$store.getters['isVisible']
+        return this.$store.getters['popUp/isVisible']
       },
 
       isVisibleModalCategories() {
-        return this.$store.getters['isVisibleModalCategories']
+        return this.$store.getters['popUp/isVisibleModalCategories']
       },
 
       getAllTasks() {
-        return this.$store.getters['getTasks']
+        const taskWithStatus = this.$store.getters['getTasksWithStatus']
+        if(taskWithStatus) {
+          return taskWithStatus
+        } else {
+          return {name: 'All tasks', quantityTask: this.$store.getters['getTasks']} 
+        }
       }
     },
 
     methods: {
-      // getTask(changeTask) {
-      //   // this.changeTask = changeTask
-      //   console.log(changeTask)
-      // }
-    }
 
+    }
   }
 </script>
 
@@ -156,6 +157,7 @@ import TasksItem from './widgets/TasksItem.vue'
   }
 
   .active {
-    background: rgba(255, 255, 255, 0.747);
+    // background: rgba(255, 255, 255, 0.747);
+    
   }
 </style>

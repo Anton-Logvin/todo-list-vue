@@ -30,6 +30,18 @@ import CategoryItem from './CategoryItem.vue'
   export default {
   components: { CategoryItem },
     name: 'TasksItem',
+    
+    props: {
+      task: {
+        type: Object,
+        default: null
+      },
+
+      // index: {
+      //   type: Number,
+      //   default: null
+      // }
+    },
 
     data() {
       return {
@@ -41,6 +53,7 @@ import CategoryItem from './CategoryItem.vue'
         },
 
         statusTask: {
+          taskName: this.task.inputValue,
           title: 'Set status for task',
           titleBtn: 'Set status',
           actionVuex: 'changeTask',
@@ -53,32 +66,23 @@ import CategoryItem from './CategoryItem.vue'
       }
     },
 
-    props: {
-      task: {
-        type: Object,
-        default: null
-      },
-
-      index: {
-        type: Number,
-        default: null
-      }
-    },
-
     methods: {
       ChangeTask() {
         const changeTask = {
           task: this.task,
           index: this.index
         }
-        // this.$emit('getTask', this.task)
-        this.$store.dispatch('isVisiblePopUp', this.dataPopUp)
-        // this.$store.dispatch('taskIndexSearch', this.index)
+        this.$store.dispatch('popUp/isVisiblePopUp', this.dataPopUp)
         this.$store.dispatch('selectedChangeTask', changeTask)
       },
 
       setStatusTasks() {
-        this.$store.dispatch('isVisiblePopUp', this.statusTask)
+        const changeTask = {
+          task: this.task,
+          index: this.index
+        }
+        this.$store.dispatch('popUp/isVisiblePopUp', this.statusTask)
+        this.$store.dispatch('selectedChangeTask', changeTask)
       }
     }
   }
@@ -151,6 +155,7 @@ import CategoryItem from './CategoryItem.vue'
   &__item-icons {
     display: flex;
     justify-content: flex-end;
+    gap: 10px;
     align-self: center;
   }
 

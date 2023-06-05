@@ -1,18 +1,22 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import popUp from './modules/pop-up'
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
-  // namespaced: true,
+  namespaced: true,
+
+  modules: {
+    popUp
+  },
 
   state: {
     tasks: [],
+    tasksWithStatus: null,
+    deletedTasks: [],
     categories: [],
     changedTask: null,
-    isVisible: false,
-    isVisibleModalCategories: false,
-    dataPopUp: {}
   },
 
   getters: {
@@ -20,31 +24,48 @@ const store = new Vuex.Store({
       return state.tasks
     },
 
+    getTasksWithStatus(state) {
+      return state.tasksWithStatus
+    },
+
     getTaskForChange(state) {
       return state.changedTask
     },
 
-    isVisible(state) {
-      return state.isVisible
-    },
-
-    isVisibleModalCategories(state) {
-      return state.isVisibleModalCategories
-    },
-
-    getDataPopUp(state) {
-      return state.dataPopUp
-    },
-
     getCategories(state) {
       return state.categories
-    }
+    },
 
+    getCompletedTasks(state) {
+      return state.tasks.filter(item => item.isComplete === true)
+    },
+
+    getStarredTasks(state) {
+      return state.tasks.filter(item => item.isStarred === true)
+    },
+
+    getImpotantTasks(state) {
+      return state.tasks.filter(item => item.isImpotant === true)
+    },
+
+    getDeletedTasks(state) {
+      return state.deletedTasks
+    },
   },
 
   mutations: {
     addTask(state, task) {
       state.tasks.push(task)
+    },
+
+    deleteTask(state, task) {
+      state.deletedTasks.push(task)
+      state.tasks.splice(task.index, 1)
+    },
+
+    tasksDisplay(state, tasksWithStatus) {
+      console.log(tasksWithStatus)
+      state.tasksWithStatus = tasksWithStatus
     },
 
     addCategory(state, category) {
@@ -57,38 +78,33 @@ const store = new Vuex.Store({
 
 
     selectedChangeTask(state, changedTask) {
-      console.log(changedTask)
       state.changedTask = changedTask
     },
 
-
-
-    // taskIndexSearch(state, index) {
-    //   console.log(state.tasks)
-    //   state.tasks[index] = state.task
-     
-    // },
-
-    isVisiblePopUp(state, dataPopUp) {
-      state.isVisible = !state.isVisible
-      state.isVisibleModalCategories === true ? state.isVisibleModalCategories = false : state.isVisibleModalCategories
-      state.dataPopUp = dataPopUp
-      state.changedTask = null
+    addTasksFromStorage(state, tasks) {
+      state.tasks = tasks
     },
-
-    isVisibleModalCategories(state) {
-      state.isVisibleModalCategories = !state.isVisibleModalCategories
-      state.isVisible === true ? state.isVisible = false : state.isVisible
-    }
   },
 
   actions: {
-    addTask({commit}, taskItem) {
+    addTask({commit, dispatch}, taskItem) {
       commit('addTask', taskItem)
+      dispatch('saveToStorage')
+      dispatch('setTasksFromStorage')
     },
 
-    addCategory({commit}, categoryItem) {
+    deleteTask({commit, dispatch}, task) {
+      commit('deleteTask', task)
+      dispatch('saveToStorage')
+    },
+
+    tasksDisplay({commit}, tasksWithStatus) {
+      commit('tasksDisplay', tasksWithStatus)
+    },
+
+    addCategory({commit, dispatch}, categoryItem) {
       commit('addCategory', categoryItem)
+      dispatch('saveToStorage')
     },
 
     changeTask({commit}, changeItem) {
@@ -99,17 +115,16 @@ const store = new Vuex.Store({
       commit('selectedChangeTask', changedTask)
     },
 
-    // taskIndexSearch({commit}, index) {
-    //   commit('taskIndexSearch', index)
-    // },
-
-    isVisiblePopUp({commit}, dataPopUp) {
-      commit('isVisiblePopUp', dataPopUp)
+    saveToStorage({ state }) {
+      sessionStorage.setItem('tasks', JSON.stringify(state.tasks));
     },
-
-    isVisibleModalCategories({commit}) {
-      commit('isVisibleModalCategories')
-    }
+  
+    setTasksFromStorage({ commit }) {
+      const tasks = JSON.parse(sessionStorage.getItem('tasks'));
+      if (tasks && tasks.length) {
+        commit('addTasksFromStorage', tasks)
+      }
+    },
   }
 })
 

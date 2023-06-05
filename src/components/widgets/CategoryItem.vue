@@ -25,10 +25,10 @@
         default: null
       },
 
-      index: {
-        type: Number,
-        default: null
-      }
+      // index: {
+      //   type: Number,
+      //   default: null
+      // }
     },
 
     created() {

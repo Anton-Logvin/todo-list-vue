@@ -17,8 +17,11 @@ export default {
   components: {
     SideBar,
     AllTasks,
-   
   },
+
+  mounted() {
+    this.$store.dispatch('setTasksFromStorage')
+  }
 }
 </script>
 
