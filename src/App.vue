@@ -21,6 +21,7 @@ export default {
 
   mounted() {
     this.$store.dispatch('setTasksFromStorage')
+    this.$store.dispatch('setCategoriesFromStorage')
   }
 }
 </script>

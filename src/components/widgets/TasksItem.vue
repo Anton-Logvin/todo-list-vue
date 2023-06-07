@@ -5,7 +5,8 @@
       <label for="task"></label>
       <div class="task__item-task">
         <p class="task__item-name">{{ task.inputValue }}</p>
-        <p class="task__item-data">24  April 2020</p>
+        <p @click="dateOfCreation" class="task__item-data">{{ task.dateOfCreation }}</p>
+        
       </div>
     </div>
     <p class="task__categories">
@@ -62,8 +63,14 @@ import CategoryItem from './CategoryItem.vue'
           impotant: 'Impotant',
           completed: 'Completed',
           delete: 'Delete',
-        }
+        },
+
+        dateOfCreation: ''
       }
+    },
+
+    computed: {
+    
     },
 
     methods: {
@@ -83,7 +90,7 @@ import CategoryItem from './CategoryItem.vue'
         }
         this.$store.dispatch('popUp/isVisiblePopUp', this.statusTask)
         this.$store.dispatch('selectedChangeTask', changeTask)
-      }
+      },
     }
   }
 </script>

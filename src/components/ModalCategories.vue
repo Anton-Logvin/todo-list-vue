@@ -63,6 +63,7 @@ export default {
       this.category.color = '#' + (Math.random().toString(16) + '000000').substring(2,8).toUpperCase()
       this.$store.dispatch('addCategory', this.category)
       this.closePopUp()
+      this.$store.dispatch('saveCategoriesToStorage')
     },
 
     selectedCategories(category) {

@@ -64,7 +64,6 @@ const store = new Vuex.Store({
     },
 
     tasksDisplay(state, tasksWithStatus) {
-      console.log(tasksWithStatus)
       state.tasksWithStatus = tasksWithStatus
     },
 
@@ -84,6 +83,10 @@ const store = new Vuex.Store({
     addTasksFromStorage(state, tasks) {
       state.tasks = tasks
     },
+
+    addCategoriesFromStorage(state, categories) {
+      state.categories = categories
+    }
   },
 
   actions: {
@@ -104,7 +107,8 @@ const store = new Vuex.Store({
 
     addCategory({commit, dispatch}, categoryItem) {
       commit('addCategory', categoryItem)
-      dispatch('saveToStorage')
+      dispatch('saveCategoriesToStorage')
+      dispatch('setCategoriesFromStorage')
     },
 
     changeTask({commit}, changeItem) {
@@ -118,11 +122,22 @@ const store = new Vuex.Store({
     saveToStorage({ state }) {
       sessionStorage.setItem('tasks', JSON.stringify(state.tasks));
     },
-  
+
     setTasksFromStorage({ commit }) {
       const tasks = JSON.parse(sessionStorage.getItem('tasks'));
       if (tasks && tasks.length) {
         commit('addTasksFromStorage', tasks)
+      }
+    },
+
+    saveCategoriesToStorage({state}) {
+      sessionStorage.setItem('categories', JSON.stringify(state.categories));
+    },
+
+    setCategoriesFromStorage({ commit }) {
+      const categories = JSON.parse(sessionStorage.getItem('categories'));
+      if (categories && categories.length) {
+        commit('addCategoriesFromStorage', categories)
       }
     },
   }

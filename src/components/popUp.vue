@@ -38,14 +38,13 @@
         @isStarred="isStarred"
         @isImpotant="isImpotant"
       />
-    
+
       <custom-button 
+        v-if="!getDataPopUp.delete"
         @click.native="ButtonClick"
         :title="getDataPopUp.titleBtn"
         :imageSrc="imageTaskBtn"
       />
-
-      {{ itemPopUp }}
       
     </div>
   </div>
@@ -72,7 +71,7 @@ export default {
       itemPopUp: {
         inputValue: '',
         category: [],
-        dateOfCreation: {},
+        dateOfCreation: '',
         isStarred: false,
         isImpotant: false,
         isComplete: false,
@@ -106,17 +105,22 @@ export default {
 
   methods: {
     ButtonClick() {
+      let date = new Date()
+      const months = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", 
+            "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+      this.itemPopUp.dateOfCreation = date.getDate() + " " + months[date.getMonth()] + " " + date.getFullYear()
       this.$store.dispatch( this.getDataPopUp.actionVuex, this.itemPopUp)
       this.$store.dispatch('popUp/isVisiblePopUp')
     },
 
     selectedCategories(category) {
-      let index = this.itemPopUp.category.findIndex((item => item === category))
+      let index = this.itemPopUp.category.findIndex((item => item.inputValue === category.inputValue))
       if(index > -1) {
         this.itemPopUp.category.splice(index, 1)
       } else {
         this.itemPopUp.category.push(category)
       }
+      this.$store.dispatch('saveToStorage')
     },
 
     closePopUp() {
@@ -130,6 +134,7 @@ export default {
 
     DeleteTask() {
       this.$store.dispatch('deleteTask', this.itemPopUp)
+      this.$store.dispatch('popUp/isVisiblePopUp')
     },
 
     isStarred() {

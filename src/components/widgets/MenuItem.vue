@@ -32,7 +32,7 @@
   
 <style lang="scss" scoped>
   .item:hover {
-    background: rgb(207, 149, 207);
+    background: rgb(218, 218, 218);
   }
     .item {
       cursor: pointer;
