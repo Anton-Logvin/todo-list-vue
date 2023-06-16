@@ -2,13 +2,14 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import popUp from './modules/pop-up'
 
+
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
-  namespaced: true,
+ 
 
   modules: {
-    popUp
+    popUp,
   },
 
   state: {
@@ -17,6 +18,7 @@ const store = new Vuex.Store({
     deletedTasks: [],
     categories: [],
     changedTask: null,
+    checkedTask: false
   },
 
   getters: {
@@ -33,7 +35,12 @@ const store = new Vuex.Store({
     },
 
     getCategories(state) {
+      // console.log(state.categories)
       return state.categories
+    },
+
+    getCheckedTask(state) {
+      return state.checkedTask
     },
 
     getCompletedTasks(state) {
@@ -58,9 +65,9 @@ const store = new Vuex.Store({
       state.tasks.push(task)
     },
 
-    deleteTask(state, task) {
-      state.deletedTasks.push(task)
-      state.tasks.splice(task.index, 1)
+    deleteTask(state, deletedTask) {
+      state.deletedTasks.push(deletedTask.task)
+      state.tasks.splice(deletedTask.index, 1)
     },
 
     tasksDisplay(state, tasksWithStatus) {
@@ -86,6 +93,14 @@ const store = new Vuex.Store({
 
     addCategoriesFromStorage(state, categories) {
       state.categories = categories
+    },
+
+    isComplete(state, task) {
+      state.tasks.find((item) => {
+        if(item.name === task.name) {
+          item = task
+        }
+      })
     }
   },
 
@@ -96,8 +111,8 @@ const store = new Vuex.Store({
       dispatch('setTasksFromStorage')
     },
 
-    deleteTask({commit, dispatch}, task) {
-      commit('deleteTask', task)
+    deleteTask({commit, dispatch}, deletedTask) {
+      commit('deleteTask', deletedTask)
       dispatch('saveToStorage')
     },
 
@@ -117,6 +132,16 @@ const store = new Vuex.Store({
 
     selectedChangeTask({commit}, changedTask) {
       commit('selectedChangeTask', changedTask)
+    },
+
+    isComplete({commit, dispatch}, task) {
+      task.isComplete = !task.isComplete
+      if(task.isComplete) {
+        task.isImpotant = false
+        task.isStarred = false
+      }
+      commit('isComplete', task)
+      dispatch('saveToStorage')
     },
 
     saveToStorage({ state }) {

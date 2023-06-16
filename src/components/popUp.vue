@@ -1,219 +1,95 @@
 <template>
   <div class="wrapper">
-    <div class="popup" >
-      <div class="popup__header">
-        <h2>{{ getDataPopUp.title }}</h2>
+    <div class="pop-up" >
+      
+      <div class="pop-up__header">
+        <slot />
         <img 
-          class="popup__btn-close" 
+          class="pop-up__icon-close" 
           src="@/assets/image/close-red-icon.svg" 
           alt=""
-          @click="closePopUp"
+          @click="dialog = false"
         >
+      </div>  
+      <div class="pop-up__content">
+        <slot name="action" />  
+        <slot name="setStatus" /> 
       </div>
-      
-      <custom-input 
-        v-if="getDataPopUp.isVisibleComponent"
-        class="popup__input"
-        v-model="itemPopUp.inputValue"
-        :placeholder="getDataPopUp.placeholder"
-        fill
-      />
-
-      {{ getDataPopUp.plaseholder }}
-      <div class="popup__categories" v-if="getDataPopUp.isVisibleComponent">
-        <category-item 
-          class="popup__categories-item"
-          v-for="category in categories"
-          :key="category.name"
-          :category="category"
-          @click.native="selectedCategories(category)"
-        />
-      </div>
-
-      <status-task 
-        v-if="!getDataPopUp.isVisibleComponent"
-        :getDataPopUp="getDataPopUp"
-        @Completed="Completed"
-        @Delete="DeleteTask"
-        @isStarred="isStarred"
-        @isImpotant="isImpotant"
-      />
-
-      <custom-button 
-        v-if="!getDataPopUp.delete"
-        @click.native="ButtonClick"
-        :title="getDataPopUp.titleBtn"
-        :imageSrc="imageTaskBtn"
-      />
       
     </div>
   </div>
 </template>
 
 <script>
-import CustomButton from './form/CustomButton'
-import CustomInput from './form/CustomInput'
-import CategoryItem from './widgets/CategoryItem'
-import StatusTask from './widgets/StatusTask.vue'
+
 
 export default {
   name: 'popUp',
 
   props: {
-    changeTask: {
-      type: Object,
-      default: ()=>{},
-    }
+    value: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
       imageTaskBtn: require("@/assets/image/create-svgrepo-com.svg"),
-      itemPopUp: {
-        inputValue: '',
-        category: [],
-        dateOfCreation: '',
-        isStarred: false,
-        isImpotant: false,
-        isComplete: false,
-      },
-
-      isActive: true,
     }
   },
-  components: { 
-    CustomInput,
-    CustomButton,
-    CategoryItem,
-    StatusTask,
-   
-  },
-
+ 
   computed: {
-    getDataPopUp() {
-      return this.$store.getters['popUp/getDataPopUp']
-    },
-
-    getTaskForCgange() {
-      return this.$store.getters['getTaskForChange']
-    },
-
-    categories() {
-      return this.$store.getters['getCategories']
-    },
-    
-  },
-
-  methods: {
-    ButtonClick() {
-      let date = new Date()
-      const months = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", 
-            "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
-      this.itemPopUp.dateOfCreation = date.getDate() + " " + months[date.getMonth()] + " " + date.getFullYear()
-      this.$store.dispatch( this.getDataPopUp.actionVuex, this.itemPopUp)
-      this.$store.dispatch('popUp/isVisiblePopUp')
-    },
-
-    selectedCategories(category) {
-      let index = this.itemPopUp.category.findIndex((item => item.inputValue === category.inputValue))
-      if(index > -1) {
-        this.itemPopUp.category.splice(index, 1)
-      } else {
-        this.itemPopUp.category.push(category)
+    dialog: {
+      get() {
+        return this.value
+      },
+      set(val) {
+        this.$emit('input', val)
       }
-      this.$store.dispatch('saveToStorage')
     },
-
-    closePopUp() {
-      this.$store.dispatch('popUp/isVisiblePopUp')
-    },
-
-    Completed() {
-      this.itemPopUp.isComplete = ! this.itemPopUp.isComplete
-      this.$store.dispatch('saveToStorage')
-    },
-
-    DeleteTask() {
-      this.$store.dispatch('deleteTask', this.itemPopUp)
-      this.$store.dispatch('popUp/isVisiblePopUp')
-    },
-
-    isStarred() {
-      this.itemPopUp.isStarred = !this.itemPopUp.isStarred
-      this.$store.dispatch('saveToStorage')
-    },
-
-    isImpotant() {
-      this.itemPopUp.isImpotant = !this.itemPopUp.isImpotant
-      this.$store.dispatch('saveToStorage')
-    }
   },
-
-  created() {
-    if(this.getTaskForCgange) {
-        this.itemPopUp = this.getTaskForCgange.task
-        this.itemPopUp.index = this.getTaskForCgange.index
-      }
-  }
-
 }
 </script>
 
 <style lang="scss" scoped>
   .wrapper {
     position: absolute;
-    background: rgba(66, 66, 66, 0.336);
+    background: rgba(43, 0, 100, 0.603);
+    // background: rgba(109, 39, 126, 0.575);
+  background: linear-gradient(90deg, rgba(69, 19, 126, 0.555) 0%, rgba(65, 9, 121, 0.555) 50%, rgba(40, 0, 150, 0.555) 100%);
     height: 100%;
     width: 100%;
-    // z-index: 100;
     display: flex;
     justify-content: center;
     align-items: center;
   }
-  .popup {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 30px 30px;
+  .pop-up {
+    // display: flex;
+    // flex-direction: column;
+    // justify-content: space-between;
+    padding: 30px;
     border-radius: 8px;
     width: 500px;
-    min-height: 400px;
+    min-height: 360px;
     background: rgb(255, 255, 255);
     box-shadow: 0px 0px 8px rgba(205, 209, 212, 0.64);
-
+    
     &__header {
       display: flex;
       justify-content: space-between;
-    }
-
-    &__input {
-      border-radius: 24px;
-      padding-left: 16px;
-    }
-
-    &__categories {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
-
-    &__categories-item {
-      cursor: pointer;
-      min-width: 100px;
-      display: flex;
       align-items: center;
-      padding: 4px 24px;
-      gap: 12px;
-      border: 1px solid gray;
-      border-radius: 16px;
-      background: rgb(226, 226, 226);
+      padding-bottom: 20px;
     }
 
-    &__categories-item:hover {
-      background: rgb(189, 189, 189);
-      border: 1px solid rgb(68, 68, 68);
+    &__content {
+      min-height: 260px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      // flex-direction: column;
     }
 
-    &__btn-close {
+    &__icon-close {
       width: 36px;
       height: 36px;
       cursor: pointer;
@@ -221,7 +97,7 @@ export default {
       transition: all ease 0.3s;
     }
 
-    &__btn-close:hover {
+    &__icon-close:hover {
       box-shadow: 0px 0px 6px rgba(80, 80, 80, 0.64);
     }
   }

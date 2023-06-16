@@ -1,27 +1,33 @@
 <template>
   <div class="task">
     <div class="task__item">
-      <input class="task__checkbox" type="checkbox"  id="task" name="task" value="yes">
-      <label for="task"></label>
+      <input 
+        class="task__checkbox" 
+        type="checkbox"  
+        :id=index 
+        v-model="checked"
+        @change="changeCheckbox"
+      >
+      <label :for=index></label>
       <div class="task__item-task">
-        <p class="task__item-name">{{ task.inputValue }}</p>
-        <p @click="dateOfCreation" class="task__item-data">{{ task.dateOfCreation }}</p>
+        <p class="task__item-name">{{ task.name }}</p>
+        <!-- <p @click="dateOfCreation" class="task__item-data">{{ task.dateOfCreation }}</p> -->
         
       </div>
     </div>
     <p class="task__categories">
-        <category-item 
-          class="task__item-category"
-          v-for="(category, index) in task.category"
-          :key="category.name"
-          :category="category"
-          :index="index"
-        />
-      
+      <category-item 
+        class="task__item-category"
+        v-for="(category, index) in task.categories"
+        :key="category.name"
+        :category="category"
+        :index="index"
+      />
     </p>
+    
     <div class="task__item-icons">
-      <img class="task__item-icon" @click="ChangeTask" src="@/assets/image/editTask.svg" alt="">
-      <img class="task__item-icon" @click="setStatusTasks" src="@/assets/image/dott.svg" alt="">
+      <img class="task__item-icon" @click="openChangeTask(task)" src="@/assets/image/editTask.svg" alt="">
+      <img class="task__item-icon" @click="openSetStatusTask({task, index})" src="@/assets/image/dott.svg" alt="">
     </div>
   </div>
 </template>
@@ -38,59 +44,49 @@ import CategoryItem from './CategoryItem.vue'
         default: null
       },
 
-      // index: {
-      //   type: Number,
-      //   default: null
-      // }
+      index: {
+        type: Number,
+        default: null
+      }
     },
 
     data() {
       return {
-        dataPopUp: {
-          title: 'Save changes',
-          titleBtn: 'Save',
-          actionVuex: 'changeTask',
-          isVisibleComponent: true
-        },
-
-        statusTask: {
-          taskName: this.task.inputValue,
-          title: 'Set status for task',
-          titleBtn: 'Set status',
-          actionVuex: 'changeTask',
-          isVisibleComponent: false,
-          starred: 'Starred',
-          impotant: 'Impotant',
-          completed: 'Completed',
-          delete: 'Delete',
-        },
-
-        dateOfCreation: ''
+        dateOfCreation: '',
+        checked: false
       }
     },
 
     computed: {
-    
+      checkedTask() {
+        return this.$store.getters['getCheckedTask']
+      }
     },
 
     methods: {
-      ChangeTask() {
-        const changeTask = {
-          task: this.task,
-          index: this.index
-        }
-        this.$store.dispatch('popUp/isVisiblePopUp', this.dataPopUp)
-        this.$store.dispatch('selectedChangeTask', changeTask)
+      changeCheckbox() {
+        // if(this.checked) {
+        //   this.checked = !this.checked
+        // }
+        // this.$emit('changeCheckbox')
+        console.log(this.checkedTask)
+        this.$store.dispatch('isComplete', this.task)
       },
 
-      setStatusTasks() {
-        const changeTask = {
-          task: this.task,
-          index: this.index
-        }
-        this.$store.dispatch('popUp/isVisiblePopUp', this.statusTask)
-        this.$store.dispatch('selectedChangeTask', changeTask)
+      openChangeTask(task) {
+        const categories = JSON.parse(JSON.stringify(this.$store.getters['getCategories']))
+        this.$store.dispatch('popUp/openChangeTask', {task, categories})
       },
+
+      openSetStatusTask({task, index}) {
+        this.$store.dispatch('popUp/openSetStatusTask', {task, index})
+      }
+    },
+
+    created() {
+      if(this.task.isComplete) {
+        this.checked = true
+      } 
     }
   }
 </script>
@@ -114,6 +110,10 @@ import CategoryItem from './CategoryItem.vue'
     opacity: 0;
   }
 
+  &__checkbox+label:hover {
+    cursor: pointer;
+  }
+
   &__checkbox+label::before {
     content: '';
     display: inline-block;
@@ -124,6 +124,8 @@ import CategoryItem from './CategoryItem.vue'
     background-position: center center;
   }
 
+  
+
   &__checkbox:checked+label::before {
     border-color: #9378FF;
     background-image: url(@/assets/image/Active.svg)
@@ -132,9 +134,7 @@ import CategoryItem from './CategoryItem.vue'
   &__item-task {
     padding: 0px 0px 0px 16px;
   }
-  &__checkbox {
-    
-  }
+
 
   &__item-name {
     font-weight: 700;

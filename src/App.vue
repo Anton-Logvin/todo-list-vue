@@ -2,21 +2,41 @@
   <div 
     class="container"
   >
-    <side-bar />
-    <all-tasks />
+    <side-bar class="side-bar" @openAddTaskPopUp="openAddTaskPopUp"/>
+    <tasks-main-page class="all-tasks"/>
+    <!-- <pop-up 
+      v-if="dialog"
+      v-model="dialog"
+    /> -->
   </div>
 </template>
 
 <script>
-import AllTasks from './components/AllTasks'
+import TasksMainPage from './components/TasksMainPage.vue'
+// import PopUp from './components/popUp.vue'
 import SideBar from './components/SideBar'
+
 
 
 export default {
   name: 'App',
+
+  data() {
+    return {
+      dialog: false
+    }
+  },
+
   components: {
     SideBar,
-    AllTasks,
+    TasksMainPage,
+    // PopUp,
+  },
+
+  methods: {
+    openAddTaskPopUp() {
+      this.dialog = true
+    }
   },
 
   mounted() {
@@ -61,7 +81,7 @@ dd {
 
 /* Выставляем основные настройки по-умолчанию для body */
 body {
-  min-height: 100vh;
+  // min-height: 100vh;
   scroll-behavior: smooth;
   text-rendering: optimizeSpeed;
   // line-height: 1.5;
@@ -113,18 +133,31 @@ select {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-
+ 
   
 }
 
 .container {
+  position: relative;
+  margin: 0 auto;
   background: rgb(108,39,126);
-background: linear-gradient(90deg, rgba(108,39,126,1) 0%, rgba(65,9,121,1) 50%, rgba(81,1,182,1) 100%);
-  padding: 20px;
+  background: linear-gradient(90deg, rgba(108,39,126,1) 0%, rgba(65,9,121,1) 50%, rgba(81,1,182,1) 100%);
+  padding: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 16px;
+  max-width: 1400px;
+  height: 952px;
 }
 
+.side-bar {
+  width: 292px;
+  height: 100%;
+}
+
+.all-tasks {
+  width: 100%;
+  height: 100%;
+}
 </style>

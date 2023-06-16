@@ -30,16 +30,16 @@ import CategoryItem from './CategoryItem'
 
     data() {
       return {
-        dataPopUp: {
-          title: 'Create category',
-          titleBtn: 'Create category',
-          actionVuex: 'addCategory'
-        }
+        // dataPopUp: {
+        //   title: 'Create category',
+        //   titleBtn: 'Create category',
+        //   actionVuex: 'addCategory'
+        // }
       }
     },
 
     components: {
-        CategoryItem
+      CategoryItem
     },
 
     computed: {
@@ -50,7 +50,8 @@ import CategoryItem from './CategoryItem'
 
     methods: {
       addCategory() {
-        this.$store.dispatch('popUp/isVisibleModalCategories')
+        // this.$store.dispatch('popUp/isVisibleModalCategories')
+        this.$emit('openAddCateguryPopUp')
       }
     }
   }

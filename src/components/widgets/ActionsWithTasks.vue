@@ -30,5 +30,5 @@ import MenuItem from './MenuItem.vue'
 </script>
   
 <style lang="scss" scoped>
-
+    .active {background: red;}
 </style>

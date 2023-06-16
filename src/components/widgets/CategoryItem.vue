@@ -1,5 +1,13 @@
 <template>
-  <div class="category">
+  <div class="category" >
+    <!-- <input 
+      class="category__checkbox" 
+      type="checkbox" 
+      id="jack" 
+      value="Джек" 
+      v-model="changedCategory"
+    > -->
+    <!-- <label for="jack"></label> -->
     <div 
       class="category__color" 
       :style="{ background: category.color}"
@@ -15,7 +23,7 @@
 
     data() {
       return {
-        isActive: false
+        // changedCategory: false
       }
     },
 
@@ -24,16 +32,23 @@
         type: Object,
         default: null
       },
+      // taskCategories: {
+      //   type: Array,
+      //   default: null
+      // }
     },
   }
 </script>
 
 <style lang="scss" scoped>
-.active {
-  background: green;
-}
+// :class="{'active': category.isActive}"
+// .active {
+//   background: green;
+// }
 .category {
-
+  display: flex;
+  align-items: center;
+  
   &__color {
     // background: red;
     width: 12px;
