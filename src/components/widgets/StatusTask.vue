@@ -4,8 +4,20 @@
     <div class="statuses__wrapper">
       <span class="statuses__header">Set task status</span>
       <div class="statuses__items">
-        <p @click="isStarred" class="statuses__item">Starred</p>
-        <p @click="isImpotant" class="statuses__item">Impotant</p>
+        <p 
+          @click="isStarred" 
+          :class="{'active':task.isStarred}" 
+          class="statuses__item"
+        >
+          Starred
+        </p>
+        <p 
+          @click="isImpotant" 
+          class="statuses__item"
+          :class="{'active':task.isImpotant}" 
+        >
+          Impotant
+        </p>
       </div>
     </div>
   </div>
@@ -36,6 +48,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.active {
+  border: 2px solid green;
+}
   .statuses {
     &__task-name {
       display: flex;

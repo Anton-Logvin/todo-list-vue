@@ -54,10 +54,10 @@ export default {
   transition: .3 ease;
   border-radius: 24px;
   padding-left: 16px;
-    
-
+  border-color: rgb(156, 156, 156);
+  
   &:focus {
-    box-shadow: 0px 0px 4px rgb(190, 190, 190);
+    box-shadow: 0px 0px 8px gray;
   }
 }
 </style>

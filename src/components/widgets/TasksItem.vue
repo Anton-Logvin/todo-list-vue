@@ -11,7 +11,7 @@
       <label :for=index></label>
       <div class="task__item-task">
         <p class="task__item-name">{{ task.name }}</p>
-        <!-- <p @click="dateOfCreation" class="task__item-data">{{ task.dateOfCreation }}</p> -->
+        <p class="task__item-data">{{ task.dateOfCreation }}</p>
         
       </div>
     </div>
@@ -26,8 +26,19 @@
     </p>
     
     <div class="task__item-icons">
-      <img class="task__item-icon" @click="openChangeTask(task)" src="@/assets/image/editTask.svg" alt="">
-      <img class="task__item-icon" @click="openSetStatusTask({task, index})" src="@/assets/image/dott.svg" alt="">
+      <img 
+        class="task__item-icon" 
+        @click="openChangeTask(task)" 
+        src="@/assets/image/editTask.svg" 
+        alt=""
+      >
+      <img 
+        class="task__item-icon" 
+        @click="openSetStatusTask({task, index})" 
+        src="@/assets/image/dott.svg" 
+        alt=""
+        v-show="!ifDeletedTask"
+      >
     </div>
   </div>
 </template>
@@ -43,10 +54,13 @@ import CategoryItem from './CategoryItem.vue'
         type: Object,
         default: null
       },
-
       index: {
         type: Number,
         default: null
+      },
+      ifDeletedTask: {
+        type: Boolean,
+        default: false
       }
     },
 
@@ -66,11 +80,10 @@ import CategoryItem from './CategoryItem.vue'
     methods: {
       changeCheckbox() {
         // if(this.checked) {
-        //   this.checked = !this.checked
+          // this.checked = !this.checked
         // }
-        // this.$emit('changeCheckbox')
-        console.log(this.checkedTask)
-        this.$store.dispatch('isComplete', this.task)
+        this.$emit('changeCheckbox')
+        // this.$store.dispatch('isComplete', this.task)
       },
 
       openChangeTask(task) {

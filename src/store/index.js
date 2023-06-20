@@ -2,11 +2,9 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import popUp from './modules/pop-up'
 
-
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
- 
 
   modules: {
     popUp,
@@ -14,11 +12,14 @@ const store = new Vuex.Store({
 
   state: {
     tasks: [],
-    tasksWithStatus: null,
+    searchedTasks: [],
+    // tasksWithStatus: [],
     deletedTasks: [],
+    tasksDisplay: [],
     categories: [],
     changedTask: null,
-    checkedTask: false
+    searchText: '',
+    // checkedTask: false
   },
 
   getters: {
@@ -26,23 +27,39 @@ const store = new Vuex.Store({
       return state.tasks
     },
 
-    getTasksWithStatus(state) {
-      return state.tasksWithStatus
+    getSearchedTasks(state) {
+      // let tasks = []
+      // if(state.searchedTasks.length) {
+      //   tasks = state.searchedTasks
+      // } else {
+      //   tasks = state.tasks
+      // }
+      // return tasks
+      return state.searchedTasks
     },
 
-    getTaskForChange(state) {
-      return state.changedTask
+    getSearchText(state) {
+      return state.searchText
     },
+
+    // getTasksWithStatus(state) {
+    //   return state.tasksWithStatus
+    // },
+
+    // getTaskForChange(state) {
+    //   return state.changedTask
+    // },
 
     getCategories(state) {
       // console.log(state.categories)
       return state.categories
     },
 
-    getCheckedTask(state) {
-      return state.checkedTask
-    },
+    // getCheckedTask(state) {
+    //   return state.checkedTask
+    // },
 
+   
     getCompletedTasks(state) {
       return state.tasks.filter(item => item.isComplete === true)
     },
@@ -66,12 +83,28 @@ const store = new Vuex.Store({
     },
 
     deleteTask(state, deletedTask) {
-      state.deletedTasks.push(deletedTask.task)
-      state.tasks.splice(deletedTask.index, 1)
+      state.deletedTasks.push(deletedTask)
+      const index = state.tasks.findIndex(item => item.name === deletedTask.name);
+        if (index !== -1) {
+        state.tasks.splice(index, 1);
+      }
+    },
+    
+    searchByNameTask(state, searchText) {
+      state.searchText = searchText
+      let allTasks = state.tasks
+      if(searchText) {
+        allTasks = allTasks.filter(task => {
+          // return task.name.toLowerCase().includes(searchText.toLowerCase())
+          return task.name.slice(0, searchText.length).toLowerCase() == searchText.toLowerCase()
+        })
+      }
+      state.searchedTasks = allTasks
     },
 
-    tasksDisplay(state, tasksWithStatus) {
-      state.tasksWithStatus = tasksWithStatus
+    setTasksDisplay(state, tasksDisplay) {
+      // console.log(tasksDisplay)
+      state.tasksDisplay = tasksDisplay
     },
 
     addCategory(state, category) {
@@ -100,12 +133,18 @@ const store = new Vuex.Store({
         if(item.name === task.name) {
           item = task
         }
+        // state.checkedTask = !state.checkedTask
       })
     }
   },
 
   actions: {
     addTask({commit, dispatch}, taskItem) {
+      // console.log(taskItem)
+      let date = new Date()
+      const months = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", 
+            "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+      taskItem.dateOfCreation = date.getDate() + " " + months[date.getMonth()] + " " + date.getFullYear()
       commit('addTask', taskItem)
       dispatch('saveToStorage')
       dispatch('setTasksFromStorage')
@@ -116,8 +155,12 @@ const store = new Vuex.Store({
       dispatch('saveToStorage')
     },
 
-    tasksDisplay({commit}, tasksWithStatus) {
-      commit('tasksDisplay', tasksWithStatus)
+    searchByNameTask({commit}, searchText) {
+      commit('searchByNameTask', searchText)
+    },
+
+    setTasksDisplay({commit}, tasksDisplay) {
+      commit('setTasksDisplay', tasksDisplay)
     },
 
     addCategory({commit, dispatch}, categoryItem) {
@@ -126,8 +169,10 @@ const store = new Vuex.Store({
       dispatch('setCategoriesFromStorage')
     },
 
-    changeTask({commit}, changeItem) {
+    changeTask({commit, dispatch}, changeItem) {
       commit('changeTask', changeItem)
+      dispatch('saveToStorage')
+      //не сохраняет в sessionStorege 
     },
 
     selectedChangeTask({commit}, changedTask) {

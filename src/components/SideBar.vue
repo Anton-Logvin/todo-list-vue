@@ -4,9 +4,7 @@
       <img src="../assets/image/Manager.svg" alt="">
       <span class="sidebar__title">To Do Manager</span>
     </div>
-    <actions-with-tasks 
-      :dataMenuItem = "dataMenuItem"
-    />
+    <actions-with-tasks />
     <tasks-category @openAddCateguryPopUp="openAddCateguryPopUp"/>
     <custom-button 
       @click.native="openAddTaskPopUp"
@@ -31,6 +29,7 @@
           class="popup__input"
           v-model="task.name"
           fill
+          placeholder="Input task name"
           @input="validateInput(task.name)"
           :class="{'validate': isValidate}"
         />
@@ -72,23 +71,27 @@
         <custom-input 
           class="popup__input"
           :class="{'validate': isValidate}"
+          placeholder="Input category name"
           v-model="category.inputValue"
           @input="validateInput(category.inputValue)"
           fill
         />
         <p v-show="isValidate">Имя не может быть пустым</p>
-        <custom-button 
-          @click.native="addCategory"
-          :class="{'disabled-btn': isDisabled}"
-          title="Save"
-          :imageSrc="imageTaskBtn"
-          :disabled="isDisabled"
-        />
-        <custom-button 
-          class="popup__button" 
-          @click.native="closePopUp" 
-          title="Cancel"
-        />
+        <div class="popup__buttons">
+          <custom-button 
+          class="popup__button-save" 
+            @click.native="addCategory"
+            :class="{'disabled-btn': isDisabled}"
+            title="Save"
+            :imageSrc="imageTaskBtn"
+            :disabled="isDisabled"
+          />
+          <custom-button 
+            class="popup__button-cancel" 
+            @click.native="closePopUp" 
+            title="Cancel"
+          />
+        </div>
       </template>
     </pop-up>
     </transition>
@@ -118,7 +121,8 @@ export default {
       category: {
         inputValue: '',
         color: '',
-        isActive: false
+        isActive: false,
+        isHover: false,
       },
       imageTaskBtn: require("@/assets/image/create-svgrepo-com.svg"),
       task: {
@@ -147,15 +151,6 @@ export default {
       return this.$store.getters['getCompletedTasks']
     },
 
-    dataMenuItem() {
-      return [   
-        {name: "All Tasks", link: '/', imageSrc: '' , quantityTask: this.$store.getters['getTasks']},
-        {name: "Starred", link: 'starred', imageSrc: require('@/assets/image/star.svg'), quantityTask: this.$store.getters['getStarredTasks']},
-        {name: "Impotant", link: 'impotant', imageSrc: require('@/assets/image/alert-circle.svg'), quantityTask: this.$store.getters['getImpotantTasks']},
-        {name: "Completed", link: 'completed', imageSrc: require('@/assets/image/check-circle.svg'), quantityTask: this.$store.getters['getCompletedTasks']},
-        {name: "Deleted", link: 'deleted', imageSrc: require('@/assets/image/trash-2.svg'), quantityTask: this.$store.getters['getDeletedTasks']},]
-    },
-
     categories() {
       return this.$store.getters['getCategories']
     }
@@ -176,9 +171,6 @@ export default {
 
     closePopUp() {
       this.dialog = false
-      this.disabled = true
-      this.isValidate = false
-      this.isDisabled = true
       this.task.name = ''
       this.task.categories = []
     },
@@ -196,7 +188,7 @@ export default {
       this.category.color = '#' + (Math.random().toString(16) + '000000').substring(2,8).toUpperCase()
       this.$store.dispatch('addCategory', this.category)
       this.category.inputValue = ''
-      // this.closePopUp()
+      this.isDisabled = true
       this.$store.dispatch('saveCategoriesToStorage')
     },
 
@@ -219,20 +211,8 @@ export default {
         this.isValidate = false
         this.isDisabled = false
       }
-      // this.disabledButton()
     },
-    // disabledButton() {
-    //   if(this.task.name === '') {
-    //     this.isDisabled = true
-    //   } else {
-    //     this.isDisabled = false
-    //   }
-    // }
   },
-
-  created() {
-    // this.disabledButton()
-  }
 }
 </script>
 
@@ -269,13 +249,17 @@ export default {
     gap: 12px;
   }
   .popup {
-  height: 100%;
-  width: 100%;
-  top:50%;
-  left:50%;
-  transform:translate(-50%, -50%);
-  z-index: 10;
-  
+    height: 100%;
+    width: 100%;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    z-index: 10;
+    
+    &__input {
+      margin-top: 20px;
+    }
+
     &__categories {
       box-sizing: border-box;
       display: flex;
@@ -292,12 +276,6 @@ export default {
 
     &__buttons {
       display: flex;
-    }
-    .modal {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
     }
   }
 }

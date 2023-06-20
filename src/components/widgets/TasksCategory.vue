@@ -15,6 +15,9 @@
       :key="category.name"
       :category="category"
       :index="index"
+      @mouseover.native="mouseOver(category)"
+      @mouseout.native="mouseOut(category)"
+      :class="{ hover: isShipHovered === index }"
     />
   </div>
 </template>
@@ -24,20 +27,12 @@ import CategoryItem from './CategoryItem'
   export default {
     name: 'TasksCategory',
 
-    props: {
-    
-    },
-
     data() {
       return {
-        // dataPopUp: {
-        //   title: 'Create category',
-        //   titleBtn: 'Create category',
-        //   actionVuex: 'addCategory'
-        // }
+        isShipHovered: 'asdasdasd'
       }
     },
-
+   
     components: {
       CategoryItem
     },
@@ -52,12 +47,21 @@ import CategoryItem from './CategoryItem'
       addCategory() {
         // this.$store.dispatch('popUp/isVisibleModalCategories')
         this.$emit('openAddCateguryPopUp')
+      },
+      mouseOver(category) {
+        category.isHover = true
+      },
+      mouseOut(category) {
+        category.isHover = false
       }
     }
   }
 </script>
 
 <style lang="scss" scoped>
+.hover {
+    background: green;
+  }
   .categories{
     &__header {
       display: flex;
@@ -66,7 +70,7 @@ import CategoryItem from './CategoryItem'
       padding: 24px 24px;
       text-transform: uppercase;
       color: #808080;
-
+      
     }
 
     &__item {
@@ -74,6 +78,7 @@ import CategoryItem from './CategoryItem'
       align-items: center;
       padding: 8px 24px;
       gap: 12px;
+      
     }
 
     &__create-icon {

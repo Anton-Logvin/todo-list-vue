@@ -7,8 +7,8 @@ export default {
     dialog: false,
     isVisibleChangeTask: false,
     isVisibleStatusTask: false,
-    dataPopUp: {},
-    checkedTask: false
+    // dataPopUp: {},
+    changedCategoriesInTask: [],
   },
 
   getters: {
@@ -27,9 +27,9 @@ export default {
     getIndexTask(state) {
       return state.indexTaks
     },
-    getDataPopUp(state) {
-      return state.dataPopUp
-    },
+    // getDataPopUp(state) {
+    //   return state.dataPopUp
+    // },
     changedCategoriesInTask(state) {
       return state.changedCategoriesInTask
     }

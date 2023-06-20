@@ -1,15 +1,15 @@
 <template>
   <router-link 
     class="item" 
-    :class="{ 'active': isActive}"
+    :class="{ 'active': item.isActive}"
     :to='item.link' 
-    @click="clickMenuItem"
   >
     <div class="item__content">
       <img class="item__icon" :src="item.imageSrc" alt="">
       <span>{{ item.name }}</span> 
     </div>
-    <span>{{ item.quantityTask.length }}</span>
+    <span>{{ tasksLength[index].tasks.length }}</span>
+   
   </router-link>
 </template>
 
@@ -26,25 +26,26 @@
       item: {
         type: Object,
         default: ()=>{}
+      },
+      index: {
+        type: Number,
+        default: 0,
+      },
+      tasksLength: {
+        type: Array,
+        default: null
       }
     },
-
-    methods: {
-      clickMenuItem() {
-        this.isActive = true
-        if(this.item.quantityTask.length) {
-          this.$store.dispatch('tasksDisplay', this.item)
-        }
-        
-      }
-    }
   }
 </script>
   
 <style lang="scss" scoped>
-  .active {background: red;}
+  .active {
+    background: linear-gradient(90.1deg, rgba(147, 120, 255, 0.15) 1.31%, rgba(249, 249, 251, 0) 99.94%);
+    box-shadow: inset 4px 0px 0px #9378FF;
+  }
   .item:hover {
-    background: rgb(218, 218, 218);
+    background: linear-gradient(90.1deg, rgba(147, 120, 255, 0.15) 1.31%, rgba(249, 249, 251, 0) 99.94%);
   }
   .item {
     text-decoration: none;
@@ -55,15 +56,12 @@
     justify-content: space-between;
     padding: 8px 24px;
     gap: 12px;
+    transition: all 0.5s ease;
 
     &__content {
       display: flex;
       align-items: center;
     }
-
-    // &__item:hover {
-    //   background: #F9F9FB;
-    // }
 
     &__icon {
       padding-right: 14px;

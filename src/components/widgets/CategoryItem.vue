@@ -1,19 +1,21 @@
 <template>
-  <div class="category" >
-    <!-- <input 
-      class="category__checkbox" 
-      type="checkbox" 
-      id="jack" 
-      value="Джек" 
-      v-model="changedCategory"
-    > -->
-    <!-- <label for="jack"></label> -->
-    <div 
+  <div 
+    class="category" 
+  >
+    <div class="category__title">
+      <div 
       class="category__color" 
       :style="{ background: category.color}"
-    ></div>
-    {{ category.inputValue }}
-    
+      >
+      </div>
+      <span class="category__name">{{ category.inputValue }}</span>
+    </div>
+    <img 
+      class="category__icon" 
+      v-show="category.isHover"
+      src="@/assets/image/dott.svg" 
+      alt=""
+    >
   </div>
 </template>
 
@@ -23,7 +25,7 @@
 
     data() {
       return {
-        // changedCategory: false
+        
       }
     },
 
@@ -32,28 +34,43 @@
         type: Object,
         default: null
       },
-      // taskCategories: {
-      //   type: Array,
-      //   default: null
-      // }
+      upHere: {
+        type: Boolean,
+        default: false
+      }
     },
   }
 </script>
 
 <style lang="scss" scoped>
-// :class="{'active': category.isActive}"
-// .active {
-//   background: green;
-// }
+.category:hover {
+  background: #F9F9FB;
+}
 .category {
+  height: 40px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  
+  &__title {
+    display: flex;
+    align-items: center;
+  }
   
   &__color {
     // background: red;
     width: 12px;
     height: 12px;
     border-radius: 50%;
+  }
+
+  &__name {
+    padding-left: 16px;
+  }
+
+  &__icon {
+    transform: rotate(90deg);
   }
 }
 

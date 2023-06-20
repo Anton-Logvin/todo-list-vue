@@ -55,8 +55,7 @@ export default {
   .wrapper {
     position: absolute;
     background: rgba(43, 0, 100, 0.603);
-    // background: rgba(109, 39, 126, 0.575);
-  background: linear-gradient(90deg, rgba(69, 19, 126, 0.555) 0%, rgba(65, 9, 121, 0.555) 50%, rgba(40, 0, 150, 0.555) 100%);
+    background: linear-gradient(90deg, rgba(69, 19, 126, 0.555) 0%, rgba(65, 9, 121, 0.555) 50%, rgba(40, 0, 150, 0.555) 100%);
     height: 100%;
     width: 100%;
     display: flex;
@@ -64,9 +63,6 @@ export default {
     align-items: center;
   }
   .pop-up {
-    // display: flex;
-    // flex-direction: column;
-    // justify-content: space-between;
     padding: 30px;
     border-radius: 8px;
     width: 500px;

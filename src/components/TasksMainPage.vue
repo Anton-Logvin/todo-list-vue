@@ -2,17 +2,22 @@
   <div class="tasks">
     <div class="tasks__header">
       <h1 class="tasks__title">{{ getAllTasks.name }}</h1>
-      <input 
-        class="tasks__search" 
-        type="text" 
-        placeholder="Search"
-      >
+      <div class="tasks__search" :class="{'active-search':searchText}">
+        <input 
+          class="tasks__search-input" 
+          type="text" 
+          placeholder="Search"
+          v-model="searchText"
+          @input="searchByNameTask"
+        >
+      </div>
     </div>
     <div class="tasks__subtitle">
       <span class="tasks__subtitle-part">Task</span>
       <span class="tasks__subtitle-part">Categories</span>
       <span class="tasks__subtitle-part">Actions</span>
     </div>
+    
     <transition name="router-view">
       <router-view></router-view>
     </transition>
@@ -77,17 +82,20 @@
             :task="task"
             @isStarred="isStarred"
             @isImpotant="isImpotant"
+
           />
-          <custom-button 
-            class="popup__button" 
+          <div class="popup__buttons">
+            <custom-button 
+            class="popup__button delete-btn" 
             @click.native="deleteTask()" 
             title="Delete task"
-          />
-          <custom-button 
-            class="popup__button" 
-            @click.native="closeSetStatusTask" 
-            title="Cancel"
-          />
+            />
+            <custom-button 
+              class="popup__button cancel-btn" 
+              @click.native="closeSetStatusTask" 
+              title="Cancel"
+            />
+          </div>
         </template>
       </pop-up>
     </transition>
@@ -105,9 +113,8 @@ export default {
 
   data() {
     return {
-      // indexTask: 0,
-      getCategories: [],
-      isValidate: false
+      isValidate: false,
+      searchText: ''
     }
   },
 
@@ -145,6 +152,10 @@ export default {
     
 
   methods: {
+    searchByNameTask() {
+      this.$store.dispatch('searchByNameTask', this.searchText)
+    },
+
     closeChangeTask() {
       this.$store.dispatch('popUp/closeChangeTask')
     },
@@ -165,12 +176,11 @@ export default {
       this.$store.dispatch('ChangeTask', task)
     },
     deleteTask() {
-      const deletedTask = {
-        task: this.task,
-        index: this.indexTask
-      }
-      console.log(deletedTask)
-      this.$store.dispatch('deleteTask', deletedTask)
+      // const deletedTask = {
+      //   task: this.task,
+      //   index: this.indexTask
+      // }
+      this.$store.dispatch('deleteTask', this.task)
       this.$store.dispatch('popUp/closeSetStatusTask')
     },
     isStarred() {
@@ -195,7 +205,12 @@ export default {
 
 <style lang="scss" scoped>
 .active {
-  border: 2px solid green;
+  transition: all 0.2s ease;
+  border: 2px solid rgb(0, 158, 0);
+  // background: rgb(2, 160, 2);
+}
+.active-search {
+  border: 1px solid red;
 }
 .validate {
   box-shadow: 0px 0px 6px red;
@@ -205,7 +220,16 @@ export default {
   opacity: 0.7;
   background: gray;
 }
-
+.delete-btn {
+  background: #9c1515a9;
+}
+.delete-btn:hover{
+  background: #9c1515;
+  box-shadow: 0px 0px 6px rgba(80, 80, 80, 0.64);
+}
+.cancel-btn:hover {
+  box-shadow: 0px 0px 6px rgba(80, 80, 80, 0.64);
+}
   .tasks {
     position: relative;
     background: #FFFFFF;
@@ -227,22 +251,28 @@ export default {
     }
 
     &__search {
-      font-size: 14px;
-      line-height: 24px;
-      color: #7c1f1f;
-      width: 324px;
-      height: 40px;
-      background: #FFFFFF;
-      border: 1px solid #D6D6D6;
-      border-radius: 24px;
-      padding-left: 16px;
+      position: relative;
+      padding: 10px;
+      display: flex;
+      // border: 1px solid #fff;
     }
 
-    &__search::placeholder {
-      background: url(../assets/image/search.svg) no-repeat left 2px bottom 6px;
-      background-size: 20px;
-      height: 24px;
-      padding-left: 32px;
+    &__search-input {
+      font-size: 14px;
+      line-height: 24px;
+      width: 324px;
+      height: 40px;
+      background: url(../assets/image/search.svg) no-repeat left 16px bottom 6px;
+      border: 1px solid #D6D6D6;
+      border-radius: 24px;
+      padding-left: 48px;
+    }
+
+    &__search-input::placeholder {
+      // background: url(../assets/image/search.svg) no-repeat left 2px bottom 6px;
+      // background-size: 20px;
+      // height: 24px;
+      // padding-left: 32px;
     }
 
     &__subtitle {
@@ -283,22 +313,31 @@ export default {
     }
 
     &__categories {
-    box-sizing: border-box;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
+      // box-sizing: border-box;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
 
-  &__category {
-    box-sizing: border-box;
-    padding: 6px 10px;
-    border-radius: 20px;
-    min-width: 80px;
-  }
+    &__category {
+      // box-sizing: border-box;
+      padding: 6px 10px;
+      border-radius: 20px;
+      min-width: 80px;
+      transition: all 0.5s ease;
+    }
 
     &__category:hover {
-      // background: rgb(189, 189, 189);
-      border: 1px solid rgb(68, 68, 68);
+      background: rgba(221, 221, 221, 0.411);
+      box-shadow: 0px 0px 6px gray;
+    }
+
+    &__buttons {
+      display: flex;
+    }
+
+    &__button {
+      transition: all 0.4s ease;
     }
   }
   .popup-enter-active,

@@ -5,6 +5,7 @@
       :key="index"
       :task="task"
       :index="index"
+      :ifDeletedTask="ifDeletedTask"
     />
   </div>
 </template>
@@ -14,6 +15,12 @@ import TasksItem from '../widgets/TasksItem.vue'
   export default {
   components: { TasksItem },
     name: "DeletedTasks",
+
+    data() {
+      return {
+        ifDeletedTask: true
+      }
+    },
     
     computed: {
       getDeletedTasks() {
