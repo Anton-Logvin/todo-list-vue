@@ -15,6 +15,7 @@
       v-show="category.isHover"
       src="@/assets/image/dott.svg" 
       alt=""
+      @click="openChangeCategory"
     >
   </div>
 </template>
@@ -34,11 +35,17 @@
         type: Object,
         default: null
       },
-      upHere: {
-        type: Boolean,
-        default: false
-      }
+      // upHere: {
+      //   type: Boolean,
+      //   default: false
+      // }
     },
+
+    methods: {
+      openChangeCategory() {
+        this.$emit('openChangeCategory')
+      }
+    }
   }
 </script>
 

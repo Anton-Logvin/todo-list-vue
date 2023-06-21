@@ -7,7 +7,9 @@ export default {
     dialog: false,
     isVisibleChangeTask: false,
     isVisibleStatusTask: false,
-    // dataPopUp: {},
+    isVisibleAddTask: false,
+    isVisibleAddCategory: false,
+    isVisibleChangeCategory: false,
     changedCategoriesInTask: [],
   },
 
@@ -18,8 +20,17 @@ export default {
     isVisibleChangeTask(state) {
       return state.isVisibleChangeTask
     },
+    isVisibleChangeCategory(state) {
+      return state.isVisibleChangeCategory
+    },
     isVisibleStatusTask(state) {
       return state.isVisibleStatusTask
+    },
+    isVisibleAddTask(state) {
+      return state.isVisibleAddTask
+    },
+    isVisibleAddCategory(state) {
+      return state.isVisibleAddCategory
     },
     getTask(state) {
       return state.task
@@ -27,9 +38,6 @@ export default {
     getIndexTask(state) {
       return state.indexTaks
     },
-    // getDataPopUp(state) {
-    //   return state.dataPopUp
-    // },
     changedCategoriesInTask(state) {
       return state.changedCategoriesInTask
     }
@@ -49,38 +57,56 @@ export default {
       state.changedCategoriesInTask = categories
       state.task = task
     },
-
     closeChangeTask(state) {
       state.dialog = !state.dialog
       state.isVisibleChangeTask = !state.isVisibleChangeTask
       state.task = null
     },
-
     openSetStatusTask(state, task) {
       state.task = task
       state.dialog = !state.dialog
       state.isVisibleStatusTask = !state.isVisibleStatusTask
     },
-
     setIndexTask(state, index) {
       state.indexTaks = index
+    },
+    openAddTaskPopUp(state) {
+      state.isVisibleAddTask = true
+      state.isVisibleAddCategory = false
+      state.isVisibleChangeCategory = false
+    },
+    openAddCategoryPopUp(state) {
+      state.isVisibleAddCategory = true
+      state.isVisibleAddTask = false
+      state.isVisibleChangeCategory = false
+    },
+    openChangeCategory(state) {
+      state.isVisibleChangeCategory = true
+      state.isVisibleAddCategory = false
+      state.isVisibleAddTask = false
     }
   },
 
   actions: {
+    openAddTaskPopUp({commit}, ) {
+      commit('openAddTaskPopUp')
+    },
+    openAddCategoryPopUp({commit}, ) {
+      commit('openAddCategoryPopUp')
+    },
+    openChangeCategory({commit}, ) {
+      commit('openChangeCategory')
+    },
     openChangeTask({commit}, {task, categories}) {
       commit('openChangeTask', {task, categories})
     },
-
     closeChangeTask({commit}) {
       commit('closeChangeTask')
     },
-
     openSetStatusTask({commit}, {task, index}) {
       commit('openSetStatusTask', task)
       commit('setIndexTask', index)
     },
-    
     closeSetStatusTask({commit}) {
       commit('openSetStatusTask')
     },

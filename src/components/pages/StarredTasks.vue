@@ -5,6 +5,7 @@
       :key="index"
       :task="task"
       :index="index"
+      @changeCheckbox="changeCheckbox(task)"
     />
   </div>
 </template>
@@ -22,7 +23,9 @@ import TasksItem from '../widgets/TasksItem.vue'
     },
 
     methods: {
-
+      changeCheckbox(task) {
+        this.$store.dispatch('isComplete', task)
+      }
     }
   }
 </script>

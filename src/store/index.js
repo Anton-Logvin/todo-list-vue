@@ -27,6 +27,20 @@ const store = new Vuex.Store({
       return state.tasks
     },
 
+    // displayTasks(state) {
+    //   let tasks = []
+    //   if(state.searchedTasks.length) {
+    //     tasks = state.searchedTasks
+    //   } 
+    //   else if(state.searchText) {
+    //     tasks = []
+    //   }
+    //   else {
+    //     tasks = state.tasks
+    //   }
+    //   return tasks
+    // },
+
     getSearchedTasks(state) {
       // let tasks = []
       // if(state.searchedTasks.length) {
@@ -102,6 +116,18 @@ const store = new Vuex.Store({
       state.searchedTasks = allTasks
     },
 
+    // searchByNameTask(state, searchText) {
+    //   state.searchText = searchText
+    //   // let allTasks = state.tasks
+    //   if(searchText) {
+    //     state.searchedTasks = state.searchedTasks.filter(task => {
+    //       // return task.name.toLowerCase().includes(searchText.toLowerCase())
+    //       return task.name.slice(0, searchText.length).toLowerCase() == searchText.toLowerCase()
+    //     })
+    //   }
+    //   // state.searchedTasks = allTasks
+    // },
+
     setTasksDisplay(state, tasksDisplay) {
       // console.log(tasksDisplay)
       state.tasksDisplay = tasksDisplay
@@ -172,7 +198,7 @@ const store = new Vuex.Store({
     changeTask({commit, dispatch}, changeItem) {
       commit('changeTask', changeItem)
       dispatch('saveToStorage')
-      //не сохраняет в sessionStorege 
+      //не сохраняет в sessionStorage 
     },
 
     selectedChangeTask({commit}, changedTask) {

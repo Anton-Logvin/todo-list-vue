@@ -14,6 +14,7 @@
       <div class="pop-up__content">
         <slot name="action" />  
         <slot name="setStatus" /> 
+        <slot name="changeCategory" /> 
       </div>
       
     </div>

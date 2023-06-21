@@ -22,7 +22,7 @@ export default {
       // isActive: false
       index: 0,
       itemsMenu: [   
-        {id: 1, name: "All Tasks", link: '/', imageSrc: '' , isActive: false,},
+        {id: 1, name: "All Tasks", link: '/', imageSrc: '' , isActive: true,},
         {id: 2, name: "Starred", link: 'starred', isActive: false, imageSrc: require('@/assets/image/star.svg'), },
         {id: 3, name: "Impotant", link: 'impotant', isActive: false, imageSrc: require('@/assets/image/alert-circle.svg'),},
         {id: 4, name: "Completed", link: 'completed', isActive: false, imageSrc: require('@/assets/image/check-circle.svg'),},

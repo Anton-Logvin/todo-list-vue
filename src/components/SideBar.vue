@@ -5,7 +5,10 @@
       <span class="sidebar__title">To Do Manager</span>
     </div>
     <actions-with-tasks />
-    <tasks-category @openAddCateguryPopUp="openAddCateguryPopUp"/>
+    <tasks-category 
+      @openAddCateguryPopUp="openAddCateguryPopUp"
+      @openChangeCategory="openChangeCategory"
+    />
     <custom-button 
       @click.native="openAddTaskPopUp"
       :title="titleBtn"
@@ -93,6 +96,40 @@
           />
         </div>
       </template>
+<!-- set to popup  -->
+      <template v-if="isVisibleChangeCategory">
+        <h2>Change category!!!!!!!!</h2> 
+      </template>
+      <template 
+        #changeCategory
+        v-if="isVisibleChangeCategory"
+      >
+        <custom-input 
+          class="popup__input"
+          :class="{'validate': isValidate}"
+          placeholder="Input category name"
+          v-model="changedCategory.inputValue"
+          @input="validateInput(changedCategory.inputValue)"
+          fill
+        />
+        <p v-show="isValidate">Имя не может быть пустым</p>
+        <div class="popup__buttons">
+          <!-- <custom-button 
+          class="popup__button-save" 
+            @click.native="addCategory"
+            :class="{'disabled-btn': isDisabled}"
+            title="Save"
+            :imageSrc="imageTaskBtn"
+            :disabled="isDisabled"
+          /> -->
+          <custom-button 
+            class="popup__button-cancel" 
+            @click.native="closePopUp" 
+            title="Cancel"
+          />
+          {{ changedCategory }}
+        </div>
+      </template>
     </pop-up>
     </transition>
   </div>
@@ -114,8 +151,6 @@ export default {
       titleBtn: 'Add task',
       imageSrc: require("@/assets/image/plus.svg"),
       dialog: false,
-      isVisibleAddTask: false,
-      isVisibleAddCategory: false,
       isValidate: false,
       isDisabled: true,
       category: {
@@ -124,6 +159,7 @@ export default {
         isActive: false,
         isHover: false,
       },
+      changedCategory: {},
       imageTaskBtn: require("@/assets/image/create-svgrepo-com.svg"),
       task: {
         name: '',
@@ -150,31 +186,39 @@ export default {
     completedTasks() {
       return this.$store.getters['getCompletedTasks']
     },
-
     categories() {
       return this.$store.getters['getCategories']
-    }
+    },
+    isVisibleAddCategory() {
+      return this.$store.getters['popUp/isVisibleAddCategory']
+    },
+    isVisibleAddTask() {
+      return this.$store.getters['popUp/isVisibleAddTask']
+    },
+    isVisibleChangeCategory() {
+      return this.$store.getters['popUp/isVisibleChangeCategory']
+    },
   },
 
   methods: {
     openAddTaskPopUp() {
       this.dialog = true
-      this.isVisibleAddTask = true
-      this.isVisibleAddCategory = false
+      this.$store.dispatch('popUp/openAddTaskPopUp')
     },
-
     openAddCateguryPopUp() {
       this.dialog = true
-      this.isVisibleAddCategory = true
-      this.isVisibleAddTask = false
+      this.$store.dispatch('popUp/openAddCategoryPopUp')
     },
-
+    openChangeCategory(changedCategory) {
+      this.dialog = true
+      this.changedCategory = changedCategory
+      this.$store.dispatch('popUp/openChangeCategory')
+    },
     closePopUp() {
       this.dialog = false
       this.task.name = ''
       this.task.categories = []
     },
-
     addTask() {
       this.task.categories.forEach(item => item.isActive = false)
       this.$store.dispatch('addTask', this.task)
@@ -183,7 +227,6 @@ export default {
       this.isValidate = false
       this.isDisabled = true
     },
-
     addCategory() {
       this.category.color = '#' + (Math.random().toString(16) + '000000').substring(2,8).toUpperCase()
       this.$store.dispatch('addCategory', this.category)
@@ -191,7 +234,6 @@ export default {
       this.isDisabled = true
       this.$store.dispatch('saveCategoriesToStorage')
     },
-
     selectedCategories(category) {
       let index = this.task.categories.findIndex((item => item.inputValue === category.inputValue))
       if(index > -1) {
@@ -202,7 +244,6 @@ export default {
       category.isActive = !category.isActive
       this.$store.dispatch('saveToStorage')
     },
-
     validateInput(item) {
       if(item === '') {
         this.isValidate = true

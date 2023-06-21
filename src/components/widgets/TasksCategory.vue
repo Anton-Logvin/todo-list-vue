@@ -8,16 +8,16 @@
         @click="addCategory"
       >
     </p>
-   
+
     <category-item 
       class="categories__item"
       v-for="(category, index) in categories"
       :key="category.name"
       :category="category"
       :index="index"
+      @openChangeCategory="openChangeCategory(category)"
       @mouseover.native="mouseOver(category)"
       @mouseout.native="mouseOut(category)"
-      :class="{ hover: isShipHovered === index }"
     />
   </div>
 </template>
@@ -26,12 +26,6 @@
 import CategoryItem from './CategoryItem'
   export default {
     name: 'TasksCategory',
-
-    data() {
-      return {
-        isShipHovered: 'asdasdasd'
-      }
-    },
    
     components: {
       CategoryItem
@@ -45,7 +39,6 @@ import CategoryItem from './CategoryItem'
 
     methods: {
       addCategory() {
-        // this.$store.dispatch('popUp/isVisibleModalCategories')
         this.$emit('openAddCateguryPopUp')
       },
       mouseOver(category) {
@@ -53,15 +46,15 @@ import CategoryItem from './CategoryItem'
       },
       mouseOut(category) {
         category.isHover = false
+      },
+      openChangeCategory(category) {
+        this.$emit('openChangeCategory', category)
       }
     }
   }
 </script>
 
 <style lang="scss" scoped>
-.hover {
-    background: green;
-  }
   .categories{
     &__header {
       display: flex;
