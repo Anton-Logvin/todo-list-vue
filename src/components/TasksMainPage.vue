@@ -325,6 +325,7 @@ export default {
       border-radius: 20px;
       min-width: 80px;
       transition: all 0.5s ease;
+      // border: 2px solid rgba(0, 128, 0, 0.39);
     }
 
     &__category:hover {

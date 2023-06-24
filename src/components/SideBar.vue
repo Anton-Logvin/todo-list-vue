@@ -127,7 +127,6 @@
             @click.native="closePopUp" 
             title="Cancel"
           />
-          {{ changedCategory }}
         </div>
       </template>
     </pop-up>

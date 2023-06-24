@@ -78,6 +78,11 @@
 
   &__icon {
     transform: rotate(90deg);
+    border-radius: 4px;
+  }
+
+  &__icon:hover {
+    box-shadow: 0px 0px 4px rgb(172, 171, 171);
   }
 }
 

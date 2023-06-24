@@ -1,7 +1,7 @@
 <template>
   <div>
     <tasks-item 
-      v-for="(task, index) in displayTasks"
+      v-for="(task, index) in getCompletedTasks"
       :key="index"
       :task="task"
       :index="index"
