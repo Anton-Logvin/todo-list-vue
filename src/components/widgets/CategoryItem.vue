@@ -1,22 +1,11 @@
 <template>
-  <div 
-    class="category" 
-  >
-    <div class="category__title">
-      <div 
+  <div class="category">
+    <div 
       class="category__color" 
       :style="{ background: category.color}"
-      >
-      </div>
-      <span class="category__name">{{ category.inputValue }}</span>
-    </div>
-    <img 
-      class="category__icon" 
-      v-show="category.isHover"
-      src="@/assets/image/dott.svg" 
-      alt=""
-      @click="openChangeCategory"
-    >
+    ></div>
+    {{ category.inputValue }}
+    
   </div>
 </template>
 
@@ -26,7 +15,7 @@
 
     data() {
       return {
-        
+        isActive: false
       }
     },
 
@@ -35,54 +24,21 @@
         type: Object,
         default: null
       },
-      // upHere: {
-      //   type: Boolean,
-      //   default: false
-      // }
     },
-
-    methods: {
-      openChangeCategory() {
-        this.$emit('openChangeCategory')
-      }
-    }
   }
 </script>
 
 <style lang="scss" scoped>
-.category:hover {
-  background: #F9F9FB;
+.active {
+  background: green;
 }
 .category {
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  
-  &__title {
-    display: flex;
-    align-items: center;
-  }
-  
+
   &__color {
     // background: red;
     width: 12px;
     height: 12px;
     border-radius: 50%;
-  }
-
-  &__name {
-    padding-left: 16px;
-  }
-
-  &__icon {
-    transform: rotate(90deg);
-    border-radius: 4px;
-  }
-
-  &__icon:hover {
-    box-shadow: 0px 0px 4px rgb(172, 171, 171);
   }
 }
 

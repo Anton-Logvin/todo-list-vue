@@ -8,16 +8,13 @@
         @click="addCategory"
       >
     </p>
-
+   
     <category-item 
       class="categories__item"
       v-for="(category, index) in categories"
       :key="category.name"
       :category="category"
       :index="index"
-      @openChangeCategory="openChangeCategory(category)"
-      @mouseover.native="mouseOver(category)"
-      @mouseout.native="mouseOut(category)"
     />
   </div>
 </template>
@@ -26,9 +23,23 @@
 import CategoryItem from './CategoryItem'
   export default {
     name: 'TasksCategory',
-   
+
+    props: {
+    
+    },
+
+    data() {
+      return {
+        dataPopUp: {
+          title: 'Create category',
+          titleBtn: 'Create category',
+          actionVuex: 'addCategory'
+        }
+      }
+    },
+
     components: {
-      CategoryItem
+        CategoryItem
     },
 
     computed: {
@@ -39,16 +50,7 @@ import CategoryItem from './CategoryItem'
 
     methods: {
       addCategory() {
-        this.$emit('openAddCateguryPopUp')
-      },
-      mouseOver(category) {
-        category.isHover = true
-      },
-      mouseOut(category) {
-        category.isHover = false
-      },
-      openChangeCategory(category) {
-        this.$emit('openChangeCategory', category)
+        this.$store.dispatch('popUp/isVisibleModalCategories')
       }
     }
   }
@@ -63,7 +65,7 @@ import CategoryItem from './CategoryItem'
       padding: 24px 24px;
       text-transform: uppercase;
       color: #808080;
-      
+
     }
 
     &__item {
@@ -71,7 +73,6 @@ import CategoryItem from './CategoryItem'
       align-items: center;
       padding: 8px 24px;
       gap: 12px;
-      
     }
 
     &__create-icon {

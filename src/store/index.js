@@ -5,21 +5,18 @@ import popUp from './modules/pop-up'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
+  namespaced: true,
 
   modules: {
-    popUp,
+    popUp
   },
 
   state: {
     tasks: [],
-    searchedTasks: [],
-    // tasksWithStatus: [],
+    tasksWithStatus: null,
     deletedTasks: [],
-    tasksDisplay: [],
     categories: [],
     changedTask: null,
-    searchText: '',
-    // checkedTask: false
   },
 
   getters: {
@@ -27,53 +24,18 @@ const store = new Vuex.Store({
       return state.tasks
     },
 
-    // displayTasks(state) {
-    //   let tasks = []
-    //   if(state.searchedTasks.length) {
-    //     tasks = state.searchedTasks
-    //   } 
-    //   else if(state.searchText) {
-    //     tasks = []
-    //   }
-    //   else {
-    //     tasks = state.tasks
-    //   }
-    //   return tasks
-    // },
-
-    getSearchedTasks(state) {
-      // let tasks = []
-      // if(state.searchedTasks.length) {
-      //   tasks = state.searchedTasks
-      // } else {
-      //   tasks = state.tasks
-      // }
-      // return tasks
-      return state.searchedTasks
+    getTasksWithStatus(state) {
+      return state.tasksWithStatus
     },
 
-    getSearchText(state) {
-      return state.searchText
+    getTaskForChange(state) {
+      return state.changedTask
     },
-
-    // getTasksWithStatus(state) {
-    //   return state.tasksWithStatus
-    // },
-
-    // getTaskForChange(state) {
-    //   return state.changedTask
-    // },
 
     getCategories(state) {
-      // console.log(state.categories)
       return state.categories
     },
 
-    // getCheckedTask(state) {
-    //   return state.checkedTask
-    // },
-
-   
     getCompletedTasks(state) {
       return state.tasks.filter(item => item.isComplete === true)
     },
@@ -96,41 +58,13 @@ const store = new Vuex.Store({
       state.tasks.push(task)
     },
 
-    deleteTask(state, deletedTask) {
-      state.deletedTasks.push(deletedTask)
-      const index = state.tasks.findIndex(item => item.name === deletedTask.name);
-        if (index !== -1) {
-        state.tasks.splice(index, 1);
-      }
-    },
-    
-    searchByNameTask(state, searchText) {
-      state.searchText = searchText
-      let allTasks = state.tasks
-      if(searchText) {
-        allTasks = allTasks.filter(task => {
-          // return task.name.toLowerCase().includes(searchText.toLowerCase())
-          return task.name.slice(0, searchText.length).toLowerCase() == searchText.toLowerCase()
-        })
-      }
-      state.searchedTasks = allTasks
+    deleteTask(state, task) {
+      state.deletedTasks.push(task)
+      state.tasks.splice(task.index, 1)
     },
 
-    // searchByNameTask(state, searchText) {
-    //   state.searchText = searchText
-    //   // let allTasks = state.tasks
-    //   if(searchText) {
-    //     state.searchedTasks = state.searchedTasks.filter(task => {
-    //       // return task.name.toLowerCase().includes(searchText.toLowerCase())
-    //       return task.name.slice(0, searchText.length).toLowerCase() == searchText.toLowerCase()
-    //     })
-    //   }
-    //   // state.searchedTasks = allTasks
-    // },
-
-    setTasksDisplay(state, tasksDisplay) {
-      // console.log(tasksDisplay)
-      state.tasksDisplay = tasksDisplay
+    tasksDisplay(state, tasksWithStatus) {
+      state.tasksWithStatus = tasksWithStatus
     },
 
     addCategory(state, category) {
@@ -152,41 +86,23 @@ const store = new Vuex.Store({
 
     addCategoriesFromStorage(state, categories) {
       state.categories = categories
-    },
-
-    isComplete(state, task) {
-      state.tasks.find((item) => {
-        if(item.name === task.name) {
-          item = task
-        }
-        // state.checkedTask = !state.checkedTask
-      })
     }
   },
 
   actions: {
     addTask({commit, dispatch}, taskItem) {
-      // console.log(taskItem)
-      let date = new Date()
-      const months = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", 
-            "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
-      taskItem.dateOfCreation = date.getDate() + " " + months[date.getMonth()] + " " + date.getFullYear()
       commit('addTask', taskItem)
       dispatch('saveToStorage')
       dispatch('setTasksFromStorage')
     },
 
-    deleteTask({commit, dispatch}, deletedTask) {
-      commit('deleteTask', deletedTask)
+    deleteTask({commit, dispatch}, task) {
+      commit('deleteTask', task)
       dispatch('saveToStorage')
     },
 
-    searchByNameTask({commit}, searchText) {
-      commit('searchByNameTask', searchText)
-    },
-
-    setTasksDisplay({commit}, tasksDisplay) {
-      commit('setTasksDisplay', tasksDisplay)
+    tasksDisplay({commit}, tasksWithStatus) {
+      commit('tasksDisplay', tasksWithStatus)
     },
 
     addCategory({commit, dispatch}, categoryItem) {
@@ -195,24 +111,12 @@ const store = new Vuex.Store({
       dispatch('setCategoriesFromStorage')
     },
 
-    changeTask({commit, dispatch}, changeItem) {
+    changeTask({commit}, changeItem) {
       commit('changeTask', changeItem)
-      dispatch('saveToStorage')
-      //не сохраняет в sessionStorage 
     },
 
     selectedChangeTask({commit}, changedTask) {
       commit('selectedChangeTask', changedTask)
-    },
-
-    isComplete({commit, dispatch}, task) {
-      task.isComplete = !task.isComplete
-      if(task.isComplete) {
-        task.isImpotant = false
-        task.isStarred = false
-      }
-      commit('isComplete', task)
-      dispatch('saveToStorage')
     },
 
     saveToStorage({ state }) {

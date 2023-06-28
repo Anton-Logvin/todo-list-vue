@@ -1,71 +1,59 @@
 <template>
-  <router-link 
-    class="item" 
-    :class="{ 'active': item.isActive}"
-    :to='item.link' 
-  >
+  <div class="item" @click="clickMenuItem">
     <div class="item__content">
       <img class="item__icon" :src="item.imageSrc" alt="">
       <span>{{ item.name }}</span> 
     </div>
-    <span>{{ tasksLength[index].tasks.length }}</span>
-   
-  </router-link>
+    <span>{{ item.quantityTask.length }}</span>
+  </div>
 </template>
 
 <script>
   export default {
     name: "MenuItem",
-    data() {
-      return {
-        isActive: false
-      }
-    },
 
     props: {
       item: {
         type: Object,
         default: ()=>{}
-      },
-      index: {
-        type: Number,
-        default: 0,
-      },
-      tasksLength: {
-        type: Array,
-        default: null
       }
     },
+
+    methods: {
+      clickMenuItem() {
+        if(this.item.quantityTask.length) {
+          this.$store.dispatch('tasksDisplay', this.item)
+        }
+        
+      }
+    }
   }
 </script>
   
 <style lang="scss" scoped>
-  .active {
-    background: linear-gradient(90.1deg, rgba(147, 120, 255, 0.15) 1.31%, rgba(249, 249, 251, 0) 99.94%);
-    box-shadow: inset 4px 0px 0px #9378FF;
-  }
   .item:hover {
-    background: linear-gradient(90.1deg, rgba(147, 120, 255, 0.15) 1.31%, rgba(249, 249, 251, 0) 99.94%);
+    background: rgb(218, 218, 218);
   }
-  .item {
-    text-decoration: none;
-    color: #47415E;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px 24px;
-    gap: 12px;
-    transition: all 0.5s ease;
-
-    &__content {
+    .item {
+      cursor: pointer;
       display: flex;
       align-items: center;
-    }
+      justify-content: space-between;
+      padding: 8px 24px;
+      gap: 12px;
 
-    &__icon {
-      padding-right: 14px;
+      &__content {
+        display: flex;
+        align-items: center;
+      }
+
+      &__item:hover {
+        background: #F9F9FB;
+      }
+
+      &__icon {
+        padding-right: 14px;
+      }
     }
-  }
 
 </style>

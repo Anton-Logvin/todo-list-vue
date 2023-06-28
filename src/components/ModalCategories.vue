@@ -1,28 +1,26 @@
-<!-- <template>
-  <div class="wrapper">
-    <div class="modal" >
-      <div class="modal__header">
-        <h2>CATEGORIES</h2>
-        <img 
-          class="modal__btn-close" 
-          src="@/assets/image/close-red-icon.svg" 
-          alt=""
-          @click="closePopUp"
-        >
-      </div>
-      
-      <custom-input 
-        class="modal__input"
-        v-model="category.inputValue"
-        fill
-      />
-
-      <custom-button 
-        @click.native="addCategory"
-        :title="titleBtn"
-        :imageSrc="imageTaskBtn"
-      />
+<template>
+  <div class="popup" >
+    <div class="popup__header">
+      <h2>CATEGORIES</h2>
+      <img 
+        class="popup__btn-close" 
+        src="@/assets/image/close-red-icon.svg" 
+        alt=""
+        @click="closePopUp"
+      >
     </div>
+    
+    <custom-input 
+      class="popup__input"
+      v-model="category.inputValue"
+      fill
+    />
+
+    <custom-button 
+      @click.native="addCategory"
+      :title="titleBtn"
+      :imageSrc="imageTaskBtn"
+    />
   </div>
 </template>
 
@@ -38,8 +36,7 @@ export default {
       titleBtn: 'Create category',
       category: {
         inputValue: '',
-        color: '',
-        isActive: false
+        color: ''
       },
       imageTaskBtn: require("@/assets/image/create-svgrepo-com.svg"),
     }
@@ -82,16 +79,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .wrapper {
-    position: absolute;
-    background: rgba(66, 66, 66, 0.336);
-    height: 100%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .modal {
+  .popup {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -149,4 +137,4 @@ export default {
   }
 
 
-</style> -->
+</style>

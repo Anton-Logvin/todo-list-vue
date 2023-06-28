@@ -18,14 +18,17 @@ export default {
       type: String,
       default: ""
     },
+
     placeholder: {
       type: String,
       default: "_"
     },
+
     width: {
       type: [String, Number],
       default: 100
     },
+
     fill: {
       type: Boolean,
       default: false,
@@ -50,14 +53,12 @@ export default {
 .custom-input {
   display: block;
   height: 32px;
+  border-radius: 4px;
   outline: none;
   transition: .3 ease;
-  border-radius: 24px;
-  padding-left: 16px;
-  border-color: rgb(156, 156, 156);
-  
-  &:focus {
-    box-shadow: 0px 0px 8px gray;
-  }
+}
+
+.custom-input:focus {
+  box-shadow: 0px 0px 4px rgb(190, 190, 190);
 }
 </style>

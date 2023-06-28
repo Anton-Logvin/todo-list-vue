@@ -1,25 +1,26 @@
 <template>
-  <div class="statuses">
-    <p class="statuses__task-name">{{ task.name }}</p>
+  <div class="statuses" v-if="!getDataPopUp.isVisibleComponent">
+    <p class="statuses__task-name">{{ getDataPopUp.taskName }}</p>
     <div class="statuses__wrapper">
       <span class="statuses__header">Set task status</span>
       <div class="statuses__items">
-        <p 
-          @click="isStarred" 
-          :class="{'active':task.isStarred}" 
-          class="statuses__item"
-        >
-          Starred
+        <p @click="isStarred" class="statuses__item">{{ getDataPopUp.starred }}</p>
+        <p @click="isImpotant" class="statuses__item">{{ getDataPopUp.impotant }}</p>
+      </div>
+    </div>
+  
+    <div class="statuses__wrapper">
+      <span class="statuses__header">Complete or delete the task</span>
+      <div class="statuses__items">
+        <p @click="CompletedTask" class="statuses__item completed">
+          {{ getDataPopUp.completed }}
         </p>
-        <p 
-          @click="isImpotant" 
-          class="statuses__item"
-          :class="{'active':task.isImpotant}" 
-        >
-          Impotant
+        <p @click="DeleteTask" class="statuses__item delete">
+          {{ getDataPopUp.delete }}
         </p>
       </div>
     </div>
+    
   </div>
 </template>
 
@@ -29,28 +30,34 @@ export default {
   name: 'StatusTask',
 
   props: {
-    task: {
+    getDataPopUp: {
       type: Object,
       default: null
     }
   },
 
   methods: {
+    CompletedTask() {
+      // this.$store.dispatch('completedTask')
+      this.$emit('Completed')
+    },
+
+    DeleteTask() {
+      this.$emit('Delete')
+    },
+
     isStarred() {
       this.$emit('isStarred')
     },
 
     isImpotant() {
       this.$emit('isImpotant')
-    },
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.active {
-  border: 2px solid green;
-}
   .statuses {
     &__task-name {
       display: flex;
@@ -79,6 +86,7 @@ export default {
     &__item {
       background: rgb(233, 233, 233);
       padding: 10px;
+      
       border-radius: 20px;
       min-width: 120px;
       max-width: 80%;
@@ -91,4 +99,26 @@ export default {
       background: rgb(189, 189, 189);
     }
   }  
+  .completed {
+    border: 1px solid green;
+    background: #fff;
+    color: green;
+    transition: all ease .3s;
+  }
+  .completed:hover {
+    background: green;
+    color: #fff;
+  }
+
+  .delete {
+    border: 1px solid red;
+    background: #fff;
+    color: red;
+    transition: all ease .4s;
+  }
+
+  .delete:hover {
+    background: red;
+    color: #fff;
+  }
 </style>
